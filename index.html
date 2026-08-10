@@ -190,6 +190,28 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 .user-dropdown .ud-dot{width:8px;height:8px;border-radius:50%}
 .ud-dot.wbb{background:var(--accent)}
 .ud-dot.hgg{background:var(--green)}
+
+/* ===== Celebration Overlay ===== */
+.cheer-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.cheer-overlay.show{opacity:1}
+.cheer-overlay .cheer-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3)}
+.cheer-overlay .cheer-card{position:relative;background:var(--card);border-radius:20px;padding:24px 32px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.25);animation:cheerPop .4s ease-out;max-width:280px;z-index:1}
+@keyframes cheerPop{0%{transform:scale(.5) translateY(40px);opacity:0}60%{transform:scale(1.1) translateY(-5px)}100%{transform:scale(1) translateY(0);opacity:1}}
+.cheer-char{font-size:80px;line-height:1;animation:cheerBounce .6s ease-in-out infinite alternate;display:block;margin-bottom:8px}
+@keyframes cheerBounce{0%{transform:translateY(0)}100%{transform:translateY(-18px)}}
+.cheer-char.hgg-chick{animation:cheerPeck .35s ease-in-out infinite alternate}
+@keyframes cheerPeck{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(6px) rotate(-5deg)}}
+.cheer-hands{font-size:40px;animation:cheerClap .5s ease-in-out infinite alternate;display:inline-block}
+@keyframes cheerClap{0%{transform:scaleX(1) rotate(0deg)}100%{transform:scaleX(1.3) rotate(-8deg)}}
+.cheer-text{font-size:16px;font-weight:700;color:var(--accent);margin-top:8px}
+.cheer-sub{font-size:12px;color:var(--t2);margin-top:4px}
+.cheer-sparkles{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:24px;animation:cheerSparkle .8s ease-out infinite alternate}
+@keyframes cheerSparkle{0%{opacity:.4;transform:translateX(-50%) scale(.8)}100%{opacity:1;transform:translateX(-50%) scale(1.2)}}
+.cheer-rice{position:absolute;bottom:8px;font-size:14px;animation:riceBounce .5s ease-in-out infinite alternate}
+@keyframes riceBounce{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
+.rice1{left:40px;animation-delay:0s}
+.rice2{left:50%;transform:translateX(-50%);animation-delay:.15s}
+.rice3{right:40px;animation-delay:.3s}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -303,6 +325,7 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="cheerOverlay" class="cheer-overlay"><div class="cheer-bg"></div><div class="cheer-card"><div id="cheerContent"></div></div></div>
 
 <!-- Add Error Modal -->
 <div class="modal-overlay" id="error-modal" style="display:none" onclick="if(event.target===this)App.closeAddErrorModal()">
@@ -871,6 +894,7 @@ mastered:false,date:new Date().toISOString()
 });
 sd(this.data);this.renderErrorStats();
 }
+if(q.correct){this.showCheer();}
 this.renderOneExercise();
 },
 nextOneQuestion(subj,idx){
@@ -1054,7 +1078,9 @@ const pq=PAST_PAPERS[subj]?PAST_PAPERS[subj].find(q=>q.id.replace(/[ei]/,'')===s
 if(pq&&!this.isAlreadyInErrors(subj,pq.q)){
 this.data.errorNotebook[subj].push({id:'e'+Date.now(),question:pq.q,options:pq.o,answer:String.fromCharCode(65+pq.a),reason:'',chapter:'',mastered:false,date:new Date().toISOString()});
 }}this.renderPastPapers();this.renderErrorStats();
-this.toast(parseInt(sel.value)===parseInt(ca)?'正确！':'错误，已加入错题本');
+const ppCorrect=parseInt(sel.value)===parseInt(ca);
+this.toast(ppCorrect?'正确！':'错误，已加入错题本');
+if(ppCorrect)this.showCheer();
 },
 resetPP(qId){delete this.data.pastPaperAnswers[qId];sd(this.data);this.renderPastPapers();this.toast('已重置');},
 addFromPP(subj,srcId){
@@ -1064,7 +1090,36 @@ this.data.errorNotebook[subj].push({id:'e'+Date.now(),question:pq.q,options:pq.o
 sd(this.data);this.renderPastPapers();this.renderErrorStats();this.toast('已加入错题本');
 },
 toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
-clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);}
+clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);},
+showCheer(){
+const ov=document.getElementById('cheerOverlay');
+const ct=document.getElementById('cheerContent');
+if(currentUser==='hgg'){
+// 小鸡啄米
+ct.innerHTML=`
+<div style="position:relative;display:inline-block">
+<span class="cheer-char hgg-chick">🐤</span>
+<span class="cheer-rice rice1">🍚</span>
+<span class="cheer-rice rice2">🌾</span>
+<span class="cheer-rice rice3">🍚</span>
+</div>
+<div class="cheer-text">答对了！</div>
+<div class="cheer-sub">小鸡啄米.gif</div>`;
+}else{
+// wbb: 彼得堡居民盲盒人物鼓掌
+ct.innerHTML=`
+<div style="position:relative;display:inline-block">
+<span class="cheer-sparkles">✨</span>
+<span class="cheer-char">🧑‍🎄</span>
+<span class="cheer-hands">👏</span>
+</div>
+<div class="cheer-text">太棒了！</div>
+<div class="cheer-sub">彼得堡居民为你鼓掌！</div>`;
+}
+ov.classList.add('show');
+clearTimeout(ov._t);
+ov._t=setTimeout(()=>{ov.classList.remove('show');},2500);
+}
 };
 document.addEventListener('DOMContentLoaded',()=>App.init());
 </script>
