@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026中级经济师备考助手</title>
+<style>
+:root{--bg:#f5f5f0;--surface:#fff;--s2:#f8f9fa;--border:#e0e0d8;--text:#2c2c2a;--t2:#666660;--t3:#999990;--accent:#2563eb;--al:#eff6ff;--green:#16a34a;--gl:#f0fdf4;--amber:#d97706;--aml:#fffbeb;--red:#dc2626;--rl:#fef2f2;--purple:#7c3aed;--pl:#f5f3ff;--r:10px;--rs:6px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1000px;margin:0 auto;padding:0 16px}
+.header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.hi{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:17px;font-weight:600;white-space:nowrap}
+.header h1 span{color:var(--accent)}
+.tabs{display:flex;gap:4px;background:var(--s2);border-radius:var(--r);padding:3px}
+.tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.content{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+.tc{display:none}
+.tc.active{display:block}
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:20px;margin-bottom:16px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.ct{font-size:15px;font-weight:600}
+.cs{font-size:12px;color:var(--t3)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pw{margin-bottom:12px}
+.pl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.pl .pct{color:var(--t2);font-weight:500}
+.pb{height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+.pf{height:100%;border-radius:4px;transition:width .3s}
+.pf.g{background:var(--green)}.pf.b{background:var(--accent)}.pf.a{background:var(--amber)}.pf.p{background:var(--purple)}
+.pc{background:var(--s2);border-radius:var(--rs);padding:12px 14px;margin-bottom:10px;border:1px solid var(--border)}
+.pc.cur{border-color:var(--accent);background:var(--al)}
+.pc .pn{font-size:13px;font-weight:500;margin-bottom:6px}
+.pc .pm{font-size:12px;color:var(--t2);display:flex;gap:16px;flex-wrap:wrap}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.badge.cur{background:var(--al);color:var(--accent)}
+.badge.up{background:var(--s2);color:var(--t3)}
+.badge.done{background:var(--gl);color:var(--green)}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:var(--rs);font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;text-decoration:none}
+.btn:hover{border-color:#c0c0b8;background:var(--s2)}
+.btn-p{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-p:hover{background:#1d4ed8;border-color:#1d4ed8}
+.btn-d{color:var(--red);border-color:var(--red)}
+.btn-d:hover{background:var(--rl)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-xs{padding:2px 7px;font-size:11px}
+.bg{display:flex;gap:8px;flex-wrap:wrap}
+input[type="text"],input[type="number"],textarea,select{padding:8px 10px;border-radius:var(--rs);border:1px solid var(--border);font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);width:100%}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+textarea{resize:vertical;min-height:60px}
+label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
+.fg{margin-bottom:12px}
+.fr{display:flex;gap:12px}
+.fr>*{flex:1}
+.stats-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sc{flex:1;min-width:100px;background:var(--s2);padding:14px;border-radius:var(--rs);text-align:center}
+.sc .sn{font-size:24px;font-weight:600}
+.sc .sl{font-size:12px;color:var(--t2);margin-top:2px}
+.note-area{width:100%;min-height:80px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--t3)}
+.empty-state p{font-size:13px}
+.st{font-size:14px;font-weight:600;margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:10px 24px;border-radius:20px;font-size:13px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;z-index:150}
+.modal{background:var(--surface);border-radius:var(--r);padding:24px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.modal h3{font-size:16px;margin-bottom:16px}
+.ma{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+/* Exercise cards */
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:10px}
+.ex-card .ex-num{font-size:11px;color:var(--t3);margin-bottom:4px}
+.ex-card .ex-q{font-size:14px;margin-bottom:8px;line-height:1.7}
+.ex-card .ex-opts{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.ex-opt{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;font-size:13px;transition:all .15s}
+.ex-opt:hover{border-color:var(--accent);background:var(--al)}
+.ex-opt.sel{border-color:var(--accent);background:var(--al)}
+.ex-opt.corr{border-color:var(--green);background:var(--gl)}
+.ex-opt.wrong{border-color:var(--red);background:var(--rl)}
+.ex-card .ex-res{margin-top:8px;padding:10px;border-radius:var(--rs);display:none}
+.ex-card .ex-res.show{display:block}
+.ex-card .ex-res.correct{background:var(--gl);color:#166534}
+.ex-card .ex-res.wrong{background:var(--rl);color:#991b1b}
+.ex-card .ex-exp{font-size:13px;margin-top:4px;line-height:1.6}
+/* Video links */
+.video-link{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--s2);border-radius:var(--rs);margin-bottom:8px;text-decoration:none;color:var(--text);transition:all .15s;border:1px solid transparent}
+.video-link:hover{border-color:var(--accent);background:var(--al)}
+.video-link .v-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.video-link .v-info{flex:1;min-width:0}
+.video-link .v-title{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.video-link .v-meta{font-size:11px;color:var(--t3)}
+/* Error cards */
+.eq-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:10px}
+.eq-card.mastered{opacity:.6;background:var(--s2)}
+.eq-card .eq-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.eq-card .eq-question{font-size:14px;font-weight:500}
+.eq-card .eq-meta{font-size:12px;color:var(--t2);margin-top:4px}
+.eq-card .eq-answer{font-size:13px;color:var(--green);margin-top:4px}
+.eq-card .eq-reason{font-size:13px;color:var(--red);margin-top:4px}
+.eq-card .eq-actions{margin-top:8px}
+/* Past papers */
+.pq-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:12px}
+.pq-card.ac{border-left:3px solid var(--green)}
+.pq-card.aw{border-left:3px solid var(--red)}
+.pq-card .pq-num{font-size:12px;color:var(--t3);margin-bottom:6px}
+.pq-card .pq-q{font-size:14px;margin-bottom:12px;line-height:1.7}
+.pq-card .pq-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.pq-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;font-size:13px;transition:all .15s}
+.pq-opt:hover{border-color:var(--accent);background:var(--al)}
+.pq-opt.sel{border-color:var(--accent);background:var(--al)}
+.pq-opt.cc{border-color:var(--green);background:var(--gl)}
+.pq-opt.wc{border-color:var(--red);background:var(--rl)}
+.pq-card .pq-res{margin-top:12px;padding:12px;border-radius:var(--rs)}
+.pq-card .pq-res.correct{background:var(--gl);color:#166534}
+.pq-card .pq-res.wrong{background:var(--rl);color:#991b1b}
+.pq-card .pq-exp{font-size:13px;margin-top:4px;line-height:1.6}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:10px}
+.review-card .rh{display:flex;justify-content:space-between;margin-bottom:8px}
+.review-card .rs{font-size:11px;font-weight:500;padding:2px 8px;border-radius:10px}
+.review-card .rs.econ{background:var(--al);color:var(--accent)}
+.review-card .rs.ip{background:var(--pl);color:var(--purple)}
+.review-card .rq{font-size:13px;margin-bottom:8px}
+.review-card .ra{font-size:12px;color:var(--green);display:none;margin-top:4px}
+.review-card .ra.show{display:block}
+.course-info{font-size:13px;color:var(--t2);background:var(--aml);padding:12px 16px;border-radius:var(--rs);margin-bottom:16px;border-left:3px solid var(--amber)}
+.course-info strong{color:var(--amber)}
+.exercise-summary{font-size:13px;color:var(--t2);background:var(--al);padding:12px 16px;border-radius:var(--rs);margin-bottom:16px}
+.exercise-summary strong{color:var(--accent)}
+/* Countdown */
+.countdown-card{background:linear-gradient(135deg,#fef2f2 0%,#fff7ed 100%);border:1px solid #fecaca;border-radius:var(--r);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cd-icon{font-size:32px;flex-shrink:0}
+.cd-info{flex:1;min-width:200px}
+.cd-title{font-size:13px;color:var(--t2);margin-bottom:2px}
+.cd-days{font-size:36px;font-weight:700;color:var(--red);line-height:1}
+.cd-days small{font-size:16px;font-weight:400;color:var(--t2)}
+.cd-date{font-size:12px;color:var(--t3);margin-top:4px}
+.cd-bar-bg{background:#fee2e2;height:8px;border-radius:4px;overflow:hidden;margin-top:8px;width:100%}
+.cd-bar-fg{height:100%;background:linear-gradient(90deg,var(--red),var(--amber));border-radius:4px;transition:width .3s}
+/* Exercise one-by-one */
+.ex-one{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px}
+.ex-one .ex-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:12px;color:var(--t2)}
+.ex-one .ex-progress .prog-dot{display:flex;gap:4px}
+.ex-one .ex-progress .prog-dot span{width:8px;height:8px;border-radius:50%;background:#e5e7eb}
+.ex-one .ex-progress .prog-dot span.done{background:var(--green)}
+.ex-one .ex-progress .prog-dot span.wrong-dot{background:var(--red)}
+.ex-one .ex-q-big{font-size:15px;line-height:1.8;margin-bottom:16px}
+.ex-one .ex-opts-big{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.ex-one .ex-opt-big{display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;transition:all .15s}
+.ex-one .ex-opt-big:hover{border-color:var(--accent);background:var(--al)}
+.ex-one .ex-opt-big.sel{border-color:var(--accent);background:var(--al)}
+.ex-one .ex-opt-big.corr{border-color:var(--green);background:var(--gl)}
+.ex-one .ex-opt-big.wrong{border-color:var(--red);background:var(--rl)}
+.ex-one .ex-feedback{padding:14px;border-radius:8px;margin-bottom:16px;display:none}
+.ex-one .ex-feedback.show{display:block}
+.ex-one .ex-feedback.correct{background:var(--gl);border:1px solid #bbf7d0}
+.ex-one .ex-feedback.wrong{background:var(--rl);border:1px solid #fecaca}
+.ex-one .ex-feedback .fb-title{font-size:16px;font-weight:600;margin-bottom:6px}
+.ex-one .ex-feedback .fb-exp{font-size:13px;color:var(--t2);line-height:1.7}
+.ex-one .ex-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ex-done{text-align:center;padding:30px 20px}
+.ex-done .ex-score{font-size:40px;font-weight:700;margin-bottom:8px}
+.ex-done .ex-sm{font-size:13px;color:var(--t2)}
+/* Notes history */
+.note-entry{border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-bottom:10px;background:var(--s2)}
+.note-entry .note-date{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:8px}
+.note-entry .note-tag{font-size:11px;font-weight:400;color:var(--t3);margin-left:8px}
+.note-block{margin-bottom:8px}
+.note-subj{font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px}
+.note-text{font-size:13px;line-height:1.7;color:var(--text)}
+@media(max-width:700px){
+.grid-2{grid-template-columns:1fr}
+.hi{flex-direction:column;align-items:flex-start}
+.tabs{width:100%;overflow-x:auto}
+.tab{font-size:12px;padding:6px 12px}
+.fr{flex-direction:column}
+.stats-row{gap:8px}
+.sc{min-width:70px}
+.sc .sn{font-size:20px}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<header class="header"><div class="hi">
+<h1><span>2026</span> 中级经济师备考助手</h1>
+<div style="display:flex;align-items:center;gap:8px"><span id="sync-status" style="font-size:16px">☁</span>
+<div class="tabs" id="tabNav">
+<button class="tab active" data-tab="plan">学习计划</button>
+<button class="tab" data-tab="daily">每日学习</button>
+<button class="tab" data-tab="notebook">错题本</button>
+<button class="tab" data-tab="papers">真题模块</button>
+</div>
+</div></header>
+
+<div class="content">
+
+<!-- ===== TAB 1: 学习计划 ===== -->
+<div id="tab-plan" class="tc active">
+<!-- 考试倒计时 -->
+<div class="countdown-card" id="countdown-card">
+<div class="cd-icon">⏳</div>
+<div class="cd-info"><div class="cd-title">距离 2026 中级经济师考试还有</div>
+<div class="cd-days" id="cd-days">--<small> 天</small></div>
+<div class="cd-date">考试日期：2026年11月7日-8日（以准考证为准）</div>
+<div class="cd-bar-bg"><div class="cd-bar-fg" id="cd-bar" style="width:0%"></div></div>
+</div>
+</div>
+<div class="grid-2">
+<div class="card"><div class="ch"><div class="ct">经济基础</div><span class="badge cur">B站网课</span></div>
+<div id="plan-econ"></div>
+<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><label>更新进度</label>
+<div class="fr" style="margin-top:6px">
+<select id="econ-part" onchange="App.updateEconChapter()"><option value="">选部分</option></select>
+<select id="econ-chapter" onchange="App.onEconProgressChange()"><option value="">选章节</option></select>
+<select id="econ-section" onchange="App.saveProgress()"><option value="">选节</option></select>
+</div></div></div>
+<div class="card"><div class="ch"><div class="ct">知识产权</div><span class="badge cur" style="background:var(--pl);color:var(--purple)">刷题</span></div>
+<div id="plan-ip"></div>
+<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><label>更新进度</label>
+<div class="fr" style="margin-top:6px"><select id="ip-chapter" onchange="App.saveProgress()"><option value="">选章节</option></select></div>
+</div></div></div>
+<div class="card"><div class="ct" style="margin-bottom:12px">阶段日期设置</div>
+<div class="fr">
+<div class="fg"><label>经济基础-阶段一开始</label><input type="date" id="econ-p1-start" onchange="App.saveDateSettings()"></div>
+<div class="fg"><label>经济基础-阶段二开始</label><input type="date" id="econ-p2-start" onchange="App.saveDateSettings()"></div>
+<div class="fg"><label>知识产权-阶段一开始</label><input type="date" id="ip-p1-start" onchange="App.saveDateSettings()"></div>
+<div class="fg"><label>知识产权-阶段二开始</label><input type="date" id="ip-p2-start" onchange="App.saveDateSettings()"></div>
+</div></div>
+</div>
+
+<!-- ===== TAB 2: 每日学习 ===== -->
+<div id="tab-daily" class="tc">
+
+<!-- 今日课程 -->
+<div class="card" style="border-left:3px solid var(--accent)"><div class="ch"><div class="ct">今日课程 · 约1小时</div><button class="btn btn-sm btn-p" onclick="App.rerollDaily()">重新生成</button></div>
+<div id="daily-course"></div></div>
+
+<!-- 今日习题 -->
+<div class="card"><div class="ch"><div class="ct">今日练习题</div><button class="btn btn-sm" onclick="App.rerollDaily()">换一批</button></div>
+<div class="exercise-summary" id="ex-summary"></div>
+<div class="tabs" style="margin-bottom:12px;display:inline-flex" id="ex-tabs">
+<button class="tab active" onclick="App.switchExSubject('econ',this)">经济基础</button>
+<button class="tab" onclick="App.switchExSubject('ip',this)">知识产权</button>
+</div>
+<div id="daily-exercises"></div></div>
+
+<!-- 知识点笔记 -->
+<div class="card"><div class="ch"><div class="ct">知识点总结 / 学习笔记</div><button class="btn btn-sm btn-p" onclick="App.exportNotesToWord()">导出Word文档</button></div>
+<div class="grid-2">
+<div class="fg"><label>经济基础</label><textarea class="note-area" id="daily-note-econ" onchange="App.saveDailyNote('econ')" placeholder="记录今天学到的重点..."></textarea></div>
+<div class="fg"><label>知识产权</label><textarea class="note-area" id="daily-note-ip" onchange="App.saveDailyNote('ip')" placeholder="记录今天学到的重点..."></textarea></div>
+</div>
+<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+<div class="ct" style="margin-bottom:12px;font-size:14px">历史笔记</div>
+<div id="notes-history"><div class="empty-state"><p>暂无历史记录</p></div></div>
+</div></div>
+
+<!-- 今日巩固（错题回顾） -->
+<div class="card" style="border-color:var(--amber)"><div class="ch"><div class="ct" style="color:var(--amber)">今日巩固 · 错题回顾</div><button class="btn btn-sm" onclick="App.refreshDailyReview()">换一批</button></div>
+<div id="daily-review-list"><div class="empty-state"><p>还没有错题，先去做题吧</p></div></div></div>
+</div>
+
+<!-- ===== TAB 3: 错题本 ===== -->
+<div id="tab-notebook" class="tc">
+<div class="card"><div class="ch"><div class="ct">错题本</div><button class="btn btn-p btn-sm" onclick="App.openAddErrorModal()">+ 录入错题</button></div>
+<div class="stats-row" id="error-stats"></div>
+<div class="tabs" style="margin-bottom:16px;display:inline-flex">
+<button class="tab active" onclick="App.switchErrorSubject('econ',this)">经济基础</button>
+<button class="tab" onclick="App.switchErrorSubject('ip',this)">知识产权</button>
+</div>
+<div id="error-list"><div class="empty-state"><p>暂无错题</p></div></div></div>
+</div>
+
+<!-- ===== TAB 4: 真题模块 ===== -->
+<div id="tab-papers" class="tc">
+<div class="card"><div class="ch"><div class="ct">历年真题</div>
+<select id="paper-subject" onchange="App.renderPastPapers()" style="width:auto"><option value="all">全部</option><option value="econ">经济基础</option><option value="ip">知识产权</option></select></div>
+<div class="stats-row" id="paper-stats"></div><div id="paper-list"></div></div>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Add Error Modal -->
+<div class="modal-overlay" id="error-modal" style="display:none" onclick="if(event.target===this)App.closeAddErrorModal()">
+<div class="modal"><h3>录入错题</h3>
+<div class="fg"><label>科目</label><select id="err-subject"><option value="econ">经济基础</option><option value="ip">知识产权</option></select></div>
+<div class="fg"><label>所属章节</label><input type="text" id="err-chapter" placeholder="如：第5章"></div>
+<div class="fg"><label>题目</label><textarea id="err-question" placeholder="输入错题题干"></textarea></div>
+<div class="fg"><label>选项（每行一个）</label><textarea id="err-options" placeholder="A. xxx&#10;B. xxx&#10;C. xxx&#10;D. xxx"></textarea></div>
+<div class="fg"><label>正确答案</label><input type="text" id="err-answer" placeholder="如：A"></div>
+<div class="fg"><label>错误原因</label><textarea id="err-reason" placeholder="为什么做错？"></textarea></div>
+<div class="ma"><button class="btn" onclick="App.closeAddErrorModal()">取消</button><button class="btn btn-p" onclick="App.addErrorQuestion()">保存</button></div></div></div>
+
+<!-- Edit Error Modal -->
+<div class="modal-overlay" id="edit-error-modal" style="display:none" onclick="if(event.target===this)App.closeEditErrorModal()">
+<div class="modal"><h3>编辑错题</h3>
+<input type="hidden" id="edit-err-id"><input type="hidden" id="edit-err-subject">
+<div class="fg"><label>所属章节</label><input type="text" id="edit-err-chapter"></div>
+<div class="fg"><label>题目</label><textarea id="edit-err-question"></textarea></div>
+<div class="fg"><label>选项</label><textarea id="edit-err-options"></textarea></div>
+<div class="fg"><label>正确答案</label><input type="text" id="edit-err-answer"></div>
+<div class="fg"><label>错误原因</label><textarea id="edit-err-reason"></textarea></div>
+<div class="ma"><button class="btn" onclick="App.closeEditErrorModal()">取消</button><button class="btn btn-p" onclick="App.saveEditError()">保存</button></div></div></div>
+
+<script>
+// ==================== DATA: CHAPTERS ====================
+const ECON_PARTS = [
+{part:'第一部分 经济学基础',chapters:[
+{id:1,name:'社会主义基本经济制度',sec:['内涵','所有制结构','收入分配制度','市场经济体制']},
+{id:2,name:'市场需求、供给与均衡价格',sec:['需求','供给','均衡价格','弹性']},
+{id:3,name:'生产和成本理论',sec:['生产者的组织形式和企业理论','生产函数和生产曲线','成本函数和成本曲线']},
+{id:4,name:'市场结构理论',sec:['市场结构的类型','完全竞争市场','完全垄断市场','垄断竞争和寡头垄断市场']},
+{id:5,name:'生产要素市场理论',sec:['生产要素使用原则','完全竞争生产者对要素的需求','劳动供给曲线和工资决定']},
+{id:6,name:'市场失灵和政府的干预',sec:['市场失灵含义','垄断与市场失灵','外部性与市场失灵','公共物品与市场失灵','信息不对称']},
+{id:7,name:'国民收入核算和简单的宏观经济模型',sec:['国民收入核算','宏观经济均衡模型','消费储蓄和投资','总需求和总供给']},
+{id:8,name:'经济增长和经济发展理论',sec:['经济增长','经济周期和经济波动','经济发展']},
+{id:9,name:'价格总水平和就业、失业',sec:['价格总水平','就业和失业','失业与经济增长及价格总水平的关系']},
+{id:10,name:'国际贸易理论和政策',sec:['国际贸易理论','国际贸易政策']}
+]},
+{part:'第二部分 财政',chapters:[
+{id:11,name:'公共物品与财政职能',sec:['公共物品的定义','市场与政府的经济活动范围','财政的基本职能']},
+{id:12,name:'财政支出',sec:['财政支出规模及增长趋势','财政收支矛盾与支出结构优化','财政支出绩效评价']},
+{id:13,name:'财政收入',sec:['财政收入含义与分类','税收','税负转嫁','国债']},
+{id:14,name:'税收制度',sec:['税制要素','流转税','所得税','财产税']},
+{id:15,name:'政府预算',sec:['政府预算职能与原则','政府预算体系','预算编制和执行制度']},
+{id:16,name:'财政管理体制',sec:['财政管理体制内容与类型','分税制','财政转移支付制度']},
+{id:17,name:'财政政策',sec:['财政政策功能与目标','财政政策工具与类型','财政政策乘数与时滞']}
+]},
+{part:'第三部分 货币与金融',chapters:[
+{id:18,name:'货币供求与货币均衡',sec:['货币需求','货币供给','货币均衡','通货膨胀']},
+{id:19,name:'中央银行与货币政策',sec:['中央银行','货币政策']},
+{id:20,name:'商业银行与金融市场',sec:['商业银行运营与管理','金融市场']},
+{id:21,name:'金融风险与金融监管',sec:['金融风险','金融危机','金融监管理论','金融监管体制','国际金融监管协调']},
+{id:22,name:'对外金融关系与政策',sec:['汇率制度','国际储备','国际货币体系']}
+]},
+{part:'第四部分 统计',chapters:[
+{id:23,name:'统计与统计数据',sec:['统计学','变量和数据','统计调查']},
+{id:24,name:'描述统计',sec:['集中趋势的测度','离散程度的测度','分布形态的测度','变量间的相关分析']},
+{id:25,name:'抽样调查',sec:['抽样调查基本概念','概率抽样与非概率抽样','抽样误差的估计']},
+{id:26,name:'回归分析',sec:['回归模型','最小二乘法','模型的检验和预测']},
+{id:27,name:'时间序列分析',sec:['时间序列及其分类','时间序列的水平分析','时间序列的速度分析','平滑预测法']}
+]},
+{part:'第五部分 会计',chapters:[
+{id:28,name:'会计概论',sec:['会计基本概念','会计目标','会计要素','会计基本前提','会计信息质量要求']},
+{id:29,name:'会计循环',sec:['会计确认','会计计量','会计记录','会计报告']},
+{id:30,name:'会计报表',sec:['资产负债表','利润表','现金流量表']},
+{id:31,name:'财务报表分析',sec:['财务报表分析的意义和内容','基本方法','基本指标']},
+{id:32,name:'政府会计',sec:['政府会计概念','政府会计要素','政府会计报告']}
+]},
+{part:'第六部分 法律',chapters:[
+{id:33,name:'法律对经济关系的调整',sec:['调整经济的法律','经济法概念和调整对象']},
+{id:34,name:'物权法律制度',sec:['物权概述','所有权','用益物权','担保物权']},
+{id:35,name:'合同法律制度',sec:['合同概述','合同的效力','合同的订立履行和终止','合同的担保和保全','违约责任']},
+{id:36,name:'公司法律制度',sec:['公司法概述','公司的设立','公司的组织机构','股东权利和义务']},
+{id:37,name:'其他法律制度',sec:['反垄断','反不正当竞争','产品质量','消费者权益保护']}
+]}
+];
+
+const ECON_ALL_CH = [].concat(...ECON_PARTS.map(p=>p.chapters));
+const ECON_TOTAL = 37;
+
+const IP_CHS = [
+{id:1,name:'知识产权基础',sec:['知识产权概述','知识产权制度的历史与发展','知识产权的国际保护']},
+{id:2,name:'专利申请',sec:['专利制度概述','专利申请的原则','专利申请文件','专利审批程序']},
+{id:3,name:'专利保护',sec:['专利权的内容与限制','专利侵权行为与救济','专利侵权的判定']},
+{id:4,name:'商标基础',sec:['商标概述','商标的构成要素','商标注册的条件','商标注册的申请与审查']},
+{id:5,name:'商标使用',sec:['注册商标的使用','商标的许可使用','商标的转让与移转']},
+{id:6,name:'商标保护',sec:['商标专用权的保护范围','商标侵权行为','商标侵权的法律责任']},
+{id:7,name:'著作权',sec:['著作权概述','著作权的主体与客体','著作权的内容','著作权的限制','邻接权','著作权侵权与救济']},
+{id:8,name:'地理标志',sec:['地理标志概述','地理标志的保护模式','我国地理标志保护制度']},
+{id:9,name:'商业秘密',sec:['商业秘密概述','商业秘密的构成要件','商业秘密的保护']},
+{id:10,name:'集成电路布图设计等',sec:['集成电路布图设计','植物新品种','传统知识与民间文艺','域名']},
+{id:11,name:'知识产权国际保护',sec:['国际保护体系','主要国际条约','国际保护的新发展']}
+];
+const IP_TOTAL = 11;
+
+// ==================== DATA: QUESTION BANK ====================
+// ch: chapter number, q: question, o: [options], a: answer index (0-based, A=0), x: explanation
+const ECON_QBANK = [
+// Ch1
+{ch:1,q:'社会主义基本经济制度中，处于核心地位的是（ ）。',o:['收入分配制度','社会主义市场经济体制','所有制结构','资源配置方式'],a:2,x:'在社会主义基本经济制度中，所有制结构处于核心地位。生产资料所有制是生产关系的核心，决定着社会的基本性质和发展方向。'},
+{ch:1,q:'公有制经济的主体地位主要体现在（ ）。',o:['公有资产在社会总资产中占优势，国有经济控制国民经济命脉','公有资产在所有行业中占绝对优势','国有经济在所有领域占支配地位','非公有制经济对经济发展起主导作用'],a:0,x:'公有制主体地位体现在：公有资产在社会总资产中占优势，国有经济控制国民经济命脉，对经济发展起主导作用。'},
+{ch:1,q:'下列选项中，属于非公有制经济的是（ ）。',o:['国有经济','集体经济','混合所有制中的国有成分','个体经济'],a:3,x:'非公有制经济主要包括个体经济、私营经济、外资经济等。国有经济、集体经济和混合所有制中的国有/集体成分属于公有制经济。'},
+// Ch2
+{ch:2,q:'需求是指在一定时间内和一定价格条件下，消费者对某种商品或服务（ ）的数量。',o:['需要','想要','愿意而且能够购买','实际购买'],a:2,x:'需求必须同时具备购买意愿和支付能力两个条件，是"愿意而且能够购买"的数量。'},
+{ch:2,q:'需求价格弹性系数的计算公式是（ ）。',o:['价格变动百分比/需求量变动百分比','需求量变动百分比/价格变动百分比','需求量变动绝对量/价格变动绝对量','价格变动绝对量/需求量变动绝对量'],a:1,x:'需求价格弹性=需求量变动的百分比/价格变动的百分比，反映需求量对价格变动的敏感程度。'},
+{ch:2,q:'在其他条件不变的情况下，如果某商品的需求价格弹性系数大于1，则降价将导致（ ）。',o:['销售收入减少','销售收入不变','销售收入增加','无法确定'],a:2,x:'需求价格弹性>1（富有弹性）时，降价幅度小于需求量增加幅度，销售收入增加。'},
+{ch:2,q:'下列体现了需求规律的是（ ）。',o:['首饰价格上涨，质量样式提高','光盘价格提高，DVD销售量减少','猪肉价格上升，看电影人数增加','洗衣机价格下降，使其销售量增加'],a:3,x:'需求规律：在其他条件不变时，商品价格下降，需求量增加。洗衣机价格下降→销售量增加，符合需求规律。'},
+// Ch3
+{ch:3,q:'短期生产中，当边际产量大于平均产量时，平均产量（ ）。',o:['递增','递减','不变','先增后减'],a:0,x:'当MP>AP时，新增一单位投入的产出高于平均值，会拉高平均产量，因此AP递增。'},
+{ch:3,q:'根据科斯的企业理论，企业存在的根本原因是（ ）。',o:['降低市场交易成本','实现规模经济','解决外部性问题','优化资源配置'],a:0,x:'科斯认为企业的本质是作为市场机制的替代物，交易成本的节约是企业存在的根本原因。'},
+{ch:3,q:'当边际产量为0时，总产量（ ）。',o:['最小','最大','为0','先增后减'],a:1,x:'当MP=0时，总产量达到最大值；MP<0时，总产量开始下降。'},
+// Ch4
+{ch:4,q:'在完全竞争市场上，单个企业的需求曲线是（ ）。',o:['一条水平线','向右下方倾斜','向右上方倾斜','与边际成本曲线重合'],a:0,x:'完全竞争市场上，企业是价格接受者，面对的需求曲线是一条由市场价格决定的水平线。'},
+{ch:4,q:'完全竞争市场上，企业短期均衡的条件是（ ）。',o:['平均收益等于平均成本','边际收益等于边际成本','边际收益等于平均成本','平均收益等于边际成本'],a:1,x:'完全竞争市场中，企业利润最大化的条件是MR=MC（边际收益=边际成本），此时P=MR=AR。'},
+{ch:4,q:'完全垄断市场与完全竞争市场相比，产量和价格的特点是（ ）。',o:['产量更高，价格更低','产量更低，价格更高','产量和价格都更高','产量和价格都更低'],a:1,x:'垄断企业通过限制产量来提高价格，因此相比完全竞争市场，垄断市场产量更低、价格更高。'},
+// Ch5-6
+{ch:5,q:'在其他条件不变的情况下，生产者对生产要素的需求属于（ ）。',o:['直接需求','最终需求','引致需求','独立需求'],a:2,x:'生产要素需求是从消费者对最终产品的需求中派生出来的，属于引致需求（派生需求）。'},
+{ch:6,q:'下列不属于市场失灵表现的是（ ）。',o:['垄断','外部性','公共物品','充分竞争'],a:3,x:'市场失灵的主要表现包括垄断、外部性、公共物品和信息不对称。充分竞争是理想状态。'},
+{ch:6,q:'正外部性的产品，市场均衡产量相比社会最优产量（ ）。',o:['更大','更小','相等','无法确定'],a:1,x:'正外部性（外部收益）时，私人收益<社会收益，私人供给不足，市场均衡产量小于社会最优产量。'},
+// Ch7-8
+{ch:7,q:'用支出法计算GDP时，不包括（ ）。',o:['消费支出','投资支出','政府购买','转移支付'],a:3,x:'GDP=C+I+G+(X-M)，转移支付是收入再分配，不产生新的产品和服务，不计入GDP。'},
+{ch:7,q:'在一个两部门经济中，消费函数为C=100+0.75Y，投资I=460亿元，均衡国民收入为（ ）亿元。',o:['2400','2240','2800','1200'],a:1,x:'Y=C+I=100+0.75Y+460→0.25Y=560→Y=2240。均衡时总收入=总支出。'},
+{ch:8,q:'全要素生产率的计算公式是（ ）。',o:['经济增长率+劳动增长率+资本增长率','经济增长率-劳动份额×劳动增长率-资本份额×资本增长率','劳动增长率+资本增长率','经济增长率/(劳动份额+资本份额)'],a:1,x:'全要素生产率=经济增长率-(劳动份额×劳动增长率)-(资本份额×资本增长率)，即索洛余值。'},
+// Ch9-10
+{ch:9,q:'菲利普斯曲线反映的是（ ）的关系。',o:['失业率与通货膨胀率','经济增长率与失业率','通货膨胀率与经济增长率','利率与通货膨胀率'],a:0,x:'菲利普斯曲线描述了失业率与通货膨胀率之间的负相关关系（短期替代关系）。'},
+{ch:9,q:'通货膨胀的直接表现是（ ）。',o:['货币供应量增加','物价总水平持续上涨','失业率上升','经济增长放缓'],a:1,x:'通货膨胀是指在信用货币制度下，流通中的货币数量超过经济实际需要而引起的物价总水平持续上涨。'},
+{ch:10,q:'比较优势理论认为国际贸易的基础是（ ）。',o:['生产技术的绝对差别','生产技术的相对差别','要素禀赋的差别','需求偏好的差别'],a:1,x:'比较优势理论由大卫·李嘉图提出，认为国际贸易的基础是生产技术的相对差别（而非绝对差别）。'},
+// Ch11-12
+{ch:11,q:'公共财政的核心是（ ）。',o:['满足社会公共需要','实现收支平衡','促进经济增长','调节收入分配'],a:0,x:'公共财政的核心是满足社会公共需要，这是公共财政存在的基本依据。'},
+{ch:12,q:'下列财政支出中，属于转移性支出的是（ ）。',o:['政府购买办公设备','公共工程投资','公务员薪酬','社会保障支出'],a:3,x:'转移性支出是政府无偿将资金转移给企业和个人，如社会保障、补贴等。A、B、C均属购买性支出。'},
+{ch:12,q:'衡量财政支出规模的常用指标是（ ）。',o:['财政支出弹性','财政支出/财政收入','财政支出/GDP','财政支出增长率'],a:2,x:'衡量财政支出规模最常用的指标是财政支出占GDP的比重，反映政府在经济中的相对规模。'},
+// Ch13-14
+{ch:13,q:'税收的固定性是指（ ）。',o:['税收收入固定不变','征税对象和税率由法律预先规定','税收由固定机构征收','纳税人固定'],a:1,x:'税收的固定性指国家征税前就以法律形式规定了征税对象、税率等，征纳双方必须遵守。'},
+{ch:13,q:'税负转嫁中，前转是指（ ）。',o:['纳税人压低购进价格转嫁税负','纳税人提高销售价格将税负转嫁给购买者','纳税人通过改进技术消化税负','纳税人通过逃税方式规避税负'],a:1,x:'前转（顺转）是最常见的税负转嫁方式，指纳税人通过提高商品售价将税负转嫁给下游购买者。'},
+{ch:14,q:'下列属于流转税的是（ ）。',o:['企业所得税','个人所得税','增值税','房产税'],a:2,x:'流转税包括增值税、消费税、关税等。企业所得税和个人所得税属于所得税，房产税属于财产税。'},
+// Ch15-17
+{ch:15,q:'我国政府预算编制的基本原则是（ ）。',o:['以收定支','以支定收','收支平衡、略有结余','量入为出、收支平衡'],a:3,x:'我国预算编制遵循量入为出、收支平衡原则，不列赤字，这是《预算法》的明确规定。'},
+{ch:16,q:'分税制财政管理体制的核心内容是（ ）。',o:['按税种划分中央与地方收入','中央对地方的转移支付','地方税体系','中央税体系'],a:0,x:'分税制的核心是按税种划分中央与地方的收入范围，明确中央税、地方税和共享税。'},
+{ch:17,q:'下列属于扩张性财政政策的是（ ）。',o:['减少政府支出','增加税收','降低存款准备金率','增加政府购买'],a:3,x:'扩张性财政政策通过增加政府支出或减少税收来刺激总需求。A和B是紧缩性政策，C是货币政策。'},
+{ch:17,q:'由于财政政策时滞的存在，可能使政策在实施中出现的现象是（ ）。',o:['政策效果被放大','政策效果与初衷相反','政策效果被抵消','政策不受影响'],a:1,x:'财政政策时滞（认识时滞、决策时滞、执行时滞、效果时滞）可能导致政策实施时经济形势已变，效果与初衷相反。'},
+// Ch18-20
+{ch:18,q:'凯恩斯认为人们持有货币的动机不包括（ ）。',o:['交易动机','预防动机','投机动机','盈利动机'],a:3,x:'凯恩斯货币需求理论提出三大动机：交易动机、预防动机、投机动机。盈利动机不在其中。'},
+{ch:18,q:'货币供应量M1包括（ ）。',o:['M0+企业活期存款','M0+定期存款','流通中现金','M0+储蓄存款'],a:0,x:'M1（狭义货币）=M0（流通中现金）+企业活期存款，流动性较强。'},
+{ch:19,q:'中央银行提高再贴现率的作用是（ ）。',o:['增加货币供给','降低利率','收紧银根','鼓励商业银行借款'],a:2,x:'提高再贴现率增加商业银行的借款成本，减少其向央行的借款意愿，从而收紧银根，减少货币供给。'},
+{ch:20,q:'我国中央银行的主要职能不包括（ ）。',o:['制定和执行货币政策','维护金融稳定','促进充分就业','提供金融服务'],a:2,x:'我国中央银行（中国人民银行）的主要职能是制定和执行货币政策、维护金融稳定、提供金融服务。促进充分就业非其核心职能。'},
+// Ch21-22
+{ch:21,q:'根据《存款保险条例》，存款保险最高偿付限额为人民币（ ）万元。',o:['20','30','50','100'],a:2,x:'《存款保险条例》规定，存款保险最高偿付限额为人民币50万元，同一存款人在同一家投保机构所有被保险存款账户的本息合并计算。'},
+{ch:22,q:'金本位制度下，各国汇率的决定基础是（ ）。',o:['铸币平价','购买力平价','利率平价','黄金输送点'],a:0,x:'金本位制度下，铸币平价（两国货币含金量之比）是汇率决定的基础，黄金输送点是汇率波动的上下限。'},
+// Ch23-25
+{ch:23,q:'描述统计中，用来衡量数据离散程度的指标是（ ）。',o:['均值','中位数','标准差','众数'],a:2,x:'标准差是衡量数据离散程度最常用的指标。均值、中位数、众数是衡量集中趋势的指标。'},
+{ch:24,q:'一组数据排序后，处于中间位置的值称为（ ）。',o:['均值','中位数','众数','标准差'],a:1,x:'中位数是一组数据排序后处于中间位置的数值，不受极端值影响。'},
+{ch:25,q:'抽样调查中，从总体中按随机原则抽取样本的方法是（ ）。',o:['概率抽样','非概率抽样','判断抽样','配额抽样'],a:0,x:'概率抽样是按随机原则抽取样本，每个个体有已知非零概率被选中，可计算抽样误差。非概率抽样不遵循随机原则。'},
+// Ch26-28
+{ch:26,q:'回归分析中，最小二乘法是用来（ ）。',o:['最大化残差平方和','最小化残差平方和','最大化决定系数','最小化回归系数'],a:1,x:'最小二乘法（OLS）通过最小化残差（实际值与预测值之差）的平方和来估计回归系数。'},
+{ch:27,q:'时间序列的水平分析中，反映现象在一定时期内增长绝对量的指标是（ ）。',o:['发展速度','增长速度','增长量','平均发展水平'],a:2,x:'增长量反映现象在一定时期内增长的绝对数量：增长量=报告期水平-基期水平。'},
+{ch:28,q:'关于会计基本前提，以下描述正确的是（ ）。',o:['会计主体等同于法律主体','持续经营不考虑企业破产可能','会计分期将企业持续经营活动划分为连续的期间','货币计量假设不考虑币值变动'],a:2,x:'会计分期将企业持续不断的经营活动划分为连续的、长短相同的期间。A错在会计主体不等于法律主体；B错在持续经营并非不考虑；D不够准确。'},
+{ch:28,q:'下列不属于会计基本前提（会计假设）的是（ ）。',o:['会计主体','持续经营','会计分期','复式记账'],a:3,x:'会计基本前提包括会计主体、持续经营、会计分期、货币计量。复式记账是会计核算方法，不是基本前提。'},
+// Ch29-31
+{ch:29,q:'会计计量属性中，按照当前市场条件重新取得同样资产所需支付的金额是（ ）。',o:['历史成本','重置成本','可变现净值','公允价值'],a:1,x:'重置成本（现行成本）是指按照当前市场条件，重新取得同样一项资产所需支付的现金或现金等价物金额。'},
+{ch:30,q:'资产负债表中，资产按照（ ）排列。',o:['金额大小','取得时间','流动性强弱','重要性高低'],a:2,x:'资产负债表中的资产按流动性强弱排列：流动性强的在前（如货币资金），流动性弱的在后（如固定资产）。'},
+{ch:31,q:'反映企业盈利能力的财务指标是（ ）。',o:['资产负债率','流动比率','净资产收益率','存货周转率'],a:2,x:'净资产收益率（ROE）反映股东权益的收益水平，是衡量企业盈利能力的重要指标。A、B反映偿债能力，D反映营运能力。'},
+// Ch32-34
+{ch:32,q:'政府会计的核算基础是（ ）。',o:['收付实现制','权责发生制','收付实现制和权责发生制并用','现金制'],a:2,x:'政府会计实行"双基础"核算：预算会计采用收付实现制，财务会计采用权责发生制。'},
+{ch:33,q:'关于"经济法"和"调整经济的法"的说法，正确的是（ ）。',o:['两者内涵一致','"调整经济的法"包括了"经济法"','"经济法"的外延更大','两者是并列的法律部门'],a:1,x:'"调整经济的法"是调整各种经济关系的法律规范的总称，范围广泛；"经济法"是国家干预经济之法，是"调整经济的法"的一部分。'},
+{ch:34,q:'物权中，权利人依法对特定的物享有直接支配和排他的权利称为（ ）。',o:['债权','物权','知识产权','股权'],a:1,x:'物权是权利人依法对特定的物享有直接支配和排他的权利，包括所有权、用益物权和担保物权。'},
+// Ch35-37
+{ch:35,q:'合同的订立需要经过（ ）两个阶段。',o:['询价和报价','要约和承诺','谈判和签约','投标和中标'],a:1,x:'合同订立的基本程序是要约和承诺。要约是希望与他人订立合同的意思表示，承诺是受要约人同意要约的意思表示。'},
+{ch:36,q:'有限责任公司股东向股东以外的人转让股权，应当经其他股东（ ）同意。',o:['三分之一以上','过半数','三分之二以上','全体'],a:1,x:'根据《公司法》，股东向股东以外的人转让股权，应经其他股东过半数（>50%）同意。'},
+{ch:36,q:'公司的组织机构中，行使经营决策权的机构是（ ）。',o:['股东会','董事会','监事会','经理层'],a:1,x:'董事会是公司的经营决策机构，对股东会负责。股东会是权力机构，监事会是监督机构，经理层是执行机构。'},
+{ch:37,q:'反垄断法的规制对象不包括（ ）。',o:['垄断协议','滥用市场支配地位','经营者集中','企业正常竞争行为'],a:3,x:'反垄断法规制的三大行为是：垄断协议、滥用市场支配地位、具有排除限制竞争效果的经营者集中。正常竞争行为不受规制。'}
+];
+
+const IP_QBANK = [
+{ch:1,q:'发明专利权的保护期限为（ ）年。',o:['10','15','20','25'],a:2,x:'发明专利权的期限为20年，实用新型10年，外观设计15年，均自申请日起计算。'},
+{ch:1,q:'我国知识产权保护采用的基本模式是（ ）。',o:['单一行政保护','单一司法保护','行政保护与司法保护并行','以刑事保护为主'],a:2,x:'我国实行行政保护与司法保护并行的"双轨制"知识产权保护模式。'},
+{ch:2,q:'根据《专利法》，下列可以授予专利权的是（ ）。',o:['科学发现','疾病的诊断和治疗方法','动物和植物品种的生产方法','原子核变换方法'],a:2,x:'动植物品种本身不授予专利权，但其生产方法可以授予专利权。A、B、D均属于不授予专利权的情形。'},
+{ch:2,q:'专利申请中，确定专利权保护范围的主要依据是（ ）。',o:['说明书','权利要求书','摘要','附图'],a:1,x:'权利要求书是确定专利权保护范围的法律文件。说明书用于解释权利要求，摘要仅用于信息检索。'},
+{ch:2,q:'我国发明专利的审批程序是（ ）。',o:['登记制','早期公开、延迟审查制','形式审查制','实质审查制'],a:1,x:'我国发明专利采用"早期公开、延迟审查"制度：申请日起满18个月公开，申请人须在申请日起3年内提出实质审查请求。'},
+{ch:3,q:'专利权的内容中，被许可人无权允许许可合同规定以外的任何第三方实施该专利的是（ ）。',o:['独占许可','排他许可','普通许可','分许可'],a:1,x:'排他（独家）许可中，被许可人在合同约定范围内独家实施，但无权再许可第三方。独占许可连专利权人自己也不能实施。'},
+{ch:3,q:'专利侵权行为判定中，被控侵权技术方案包含了权利要求记载的全部技术特征，构成（ ）。',o:['等同侵权','相同侵权（全面覆盖）','间接侵权','不侵权'],a:1,x:'全面覆盖原则（相同侵权）：被控侵权技术方案包含权利要求记载的全部技术特征时，构成侵权。'},
+{ch:3,q:'在海外专利纠纷中，主要的解决途径是（ ）。',o:['申请行政裁决','申请仲裁','积极应诉与和解','等待对方撤诉'],a:2,x:'海外专利纠纷主要通过积极应诉和和解方式解决。行政裁决和仲裁在国际专利纠纷中应用较少。'},
+{ch:4,q:'下列不属于商标注册绝对拒绝理由的是（ ）。',o:['仅有本商品的通用名称','与他人在先使用的未注册商标相同','缺乏显著特征','有欺骗性，容易使公众误认'],a:1,x:'与他人在先使用商标相同属于相对拒绝理由（涉及在先权利）。A、C、D均为绝对拒绝理由。'},
+{ch:4,q:'商标注册申请人自其商标在外国第一次提出商标注册申请之日起（ ）内，在中国就相同商品以同一商标提出申请的，享有优先权。',o:['3个月','6个月','9个月','12个月'],a:1,x:'根据《商标法》，商标注册申请人自在外国第一次提出申请之日起6个月内，在中国申请享有优先权。'},
+{ch:5,q:'商标使用许可中，许可人应当将许可合同报送（ ）备案。',o:['不需要备案','商标局','版权局','工商行政管理部门'],a:1,x:'根据《商标法》，许可他人使用注册商标的，许可人应将其商标使用许可报商标局备案，由商标局公告。'},
+{ch:5,q:'注册商标的有效期为（ ）年，自核准注册之日起计算。',o:['5','10','15','20'],a:1,x:'注册商标的有效期为10年，自核准注册之日起计算。期满可以续展，每次续展有效期为10年。'},
+{ch:6,q:'销售不知道是侵犯注册商标专用权的商品，能证明该商品是自己合法取得并说明提供者的，（ ）。',o:['不承担赔偿责任','承担全部赔偿责任','由市场监督管理部门责令停止销售','需承担惩罚性赔偿'],a:2,x:'这种情况下由市场监督管理部门责令停止销售，但不承担赔偿责任。这体现了对善意销售者的保护。'},
+{ch:6,q:'对5年内实施（ ）次以上商标侵权行为的，应当从重处罚。',o:['1','2','3','4'],a:1,x:'根据规定，对5年内实施2次以上商标侵权行为或有其他严重情节的，应当从重处罚。'},
+{ch:7,q:'著作权中的人身权不包括（ ）。',o:['发表权','署名权','改编权','保护作品完整权'],a:2,x:'改编权属于著作财产权。著作人身权包括发表权、署名权、修改权和保护作品完整权。'},
+{ch:7,q:'下列属于著作权合理使用的是（ ）。',o:['为个人学习研究使用他人已发表作品','将他人作品用于商业广告','未经许可翻译他人作品并出版','大量复制他人作品用于销售'],a:0,x:'为个人学习、研究或者欣赏使用他人已发表作品，属于合理使用，可以不经许可、不支付报酬。'},
+{ch:7,q:'作者的署名权、修改权、保护作品完整权的保护期是（ ）。',o:['作者终生','作者终生及其死亡后50年','50年','不受限制'],a:3,x:'署名权、修改权和保护作品完整权是人身权，保护期不受限制，永远受法律保护。'},
+{ch:8,q:'关于地理标志，以下描述正确的是（ ）。',o:['地理标志保护的是个人权利','地理标志可以任意转让','地理标志标识商品来源于特定地区并与该地区因素相关','地理标志保护期限为10年'],a:2,x:'地理标志标识商品来源于特定地域，其特定质量、声誉与该地理来源相关联，是集体性权利，一般不可转让。'},
+{ch:8,q:'侵犯以地理标志作为集体商标、证明商标注册的商标专用权，违法经营额5万元以上的，可以处违法经营额（ ）以下的罚款。',o:['3倍','5倍','10倍','2倍'],a:1,x:'相关行政部门处理时，认定侵权行为成立的，违法经营额5万元以上的，可以处违法经营额5倍以下的罚款。'},
+{ch:9,q:'商业秘密的构成要件不包括（ ）。',o:['秘密性','价值性','新颖性','保密性'],a:2,x:'商业秘密三个构成要件：秘密性（不为公众所知悉）、价值性（具有商业价值）、保密性（采取相应保密措施）。新颖性是专利授权条件。'},
+{ch:9,q:'我国对商业秘密给予保护的主要法律是（ ）。',o:['《专利法》','《商标法》','《反不正当竞争法》','《反垄断法》'],a:2,x:'商业秘密主要通过《反不正当竞争法》进行保护，该法对侵犯商业秘密的行为及法律责任作出了规定。'},
+{ch:10,q:'下列不属于集成电路布图设计专有权合理使用的是（ ）。',o:['为个人目的复制','单纯为评价目的复制','为营利目的复制','对自己独立创作的相同设计进行复制'],a:2,x:'为营利目的复制不属于合理使用。个人目的、评价分析、独立创作均属于合理使用或合法行为。'},
+{ch:10,q:'集成电路布图设计专有权的保护期为（ ）年。',o:['5','10','15','20'],a:1,x:'集成电路布图设计专有权的保护期为10年，自登记申请之日或在世界任何地方首次投入商业利用之日起计算。'},
+{ch:11,q:'知识产权国际保护中，涉及专利合作的重要国际条约是（ ）。',o:['《保护文学和艺术作品伯尔尼公约》','《专利合作条约》（PCT）','《保护工业产权巴黎公约》','《与贸易有关的知识产权协定》（TRIPS）'],a:1,x:'PCT是专门关于专利国际申请合作的条约，简化了在多个国家申请专利的程序。《巴黎公约》和TRIPS涵盖更广。'},
+{ch:11,q:'马德里国际商标注册体系主要涉及的国际条约是（ ）。',o:['《马德里协定》及其议定书','《巴黎公约》','《伯尔尼公约》','TRIPS协定'],a:0,x:'马德里体系由《马德里协定》（1891年）和《马德里议定书》（1989年）构成，为商标国际注册提供了便捷途径。'}
+];
+
+// ==================== DATA: BILIBILI LINKS ====================
+const BILI_DEFAULTS = {
+  wu: 'https://search.bilibili.com/all?keyword=%E6%AD%A6%E5%B0%8F%E5%94%90+%E4%B8%AD%E7%BA%A7%E7%BB%8F%E6%B5%8E%E5%B8%88+2026&order=pubdate',
+  liu: 'https://search.bilibili.com/all?keyword=%E5%88%98%E8%89%B3%E9%9C%9E+%E4%B8%AD%E7%BA%A7%E7%BB%8F%E6%B5%8E%E5%B8%88+%E7%BB%8F%E6%B5%8E%E5%9F%BA%E7%A1%80+2026&order=pubdate',
+  ipBase: 'https://search.bilibili.com/all?keyword=%E4%B8%AD%E7%BA%A7%E7%BB%8F%E6%B5%8E%E5%B8%88+%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83&order=pubdate'
+};
+
+// B站搜索链接生成：按章节
+function biliChapterUrl(subject, chId) {
+  if (subject === 'econ') {
+    const ch = ECON_ALL_CH.find(c => c.id === chId);
+    const kw = encodeURIComponent('中级经济师 经济基础 ' + (ch ? ch.name : '第' + chId + '章'));
+    return 'https://search.bilibili.com/all?keyword=' + kw + '&order=pubdate';
+  } else {
+    const ch = IP_CHS.find(c => c.id === chId);
+    const kw = encodeURIComponent('中级经济师 知识产权 ' + (ch ? ch.name : '第' + chId + '章'));
+    return 'https://search.bilibili.com/all?keyword=' + kw + '&order=pubdate';
+  }
+}
+
+// ==================== PAST PAPERS ====================
+const PAST_PAPERS = {
+econ:[
+{id:'e1',q:'在完全竞争市场中，企业实现利润最大化的条件是（ ）。',o:['边际收益大于边际成本','边际收益等于边际成本','平均收益大于平均成本','总收益大于总成本'],a:1,x:'完全竞争市场利润最大化条件：MR=MC。当MR>MC时增产可增利润，MR<MC时减产可增利润。'},
+{id:'e2',q:'下列哪项不属于市场失灵的表现？（ ）',o:['垄断','外部性','充分竞争','信息不对称'],a:2,x:'市场失灵表现包括垄断、外部性、公共物品和信息不对称。充分竞争是理想市场状态。'},
+{id:'e3',q:'国内生产总值（GDP）的核算方法不包括（ ）。',o:['收入法','支出法','生产法','资产负债法'],a:3,x:'GDP三种核算方法：生产法、收入法、支出法。资产负债法用于编制资产负债表。'},
+{id:'e4',q:'通货膨胀的直接表现是（ ）。',o:['货币供应量增加','物价总水平持续上涨','失业率上升','经济增长放缓'],a:1,x:'通货膨胀是物价总水平的持续上涨。其他选项可能是原因或后果。'},
+{id:'e5',q:'完全垄断市场与完全竞争市场的主要区别在于（ ）。',o:['产品是否存在差异','市场上是否存在进入壁垒','企业数量不同','以上都是'],a:3,x:'两者区别包括企业数量、产品差异、进入壁垒等多方面。'},
+{id:'e6',q:'当一个经济体的实际增长率低于潜在增长率时，通常会出现（ ）。',o:['通货膨胀加剧','失业率上升','利率上升','出口增加'],a:1,x:'根据奥肯定律，实际GDP低于潜在GDP时，产出缺口为负，失业率上升。'},
+{id:'e7',q:'财政政策工具中，自动稳定器不包括（ ）。',o:['累进所得税制','政府转移支付','公开市场操作','农产品价格维持制度'],a:2,x:'公开市场操作是央行货币政策工具，非财政政策工具。'},
+{id:'e8',q:'在描述统计中，用来衡量数据离散程度的指标是（ ）。',o:['均值','中位数','标准差','众数'],a:2,x:'标准差是衡量离散程度的主要指标。均值、中位数、众数衡量集中趋势。'},
+{id:'e9',q:'关于会计基本前提，正确的是（ ）。',o:['会计主体等同于法律主体','持续经营不考虑破产可能','会计分期将经营活动划分连续期间','货币计量不考虑币值变动'],a:2,x:'会计分期将持续经营活动划分为连续、长短相同的期间。'},
+{id:'e10',q:'有限责任公司股东向股东以外的人转让股权，应经其他股东（ ）同意。',o:['三分之一以上','过半数','三分之二以上','全体'],a:1,x:'根据《公司法》，需经其他股东过半数同意。'}
+],
+ip:[
+{id:'i1',q:'发明专利权的保护期限为（ ）年。',o:['10','15','20','25'],a:2,x:'发明专利权期限20年，实用新型10年，外观设计15年，均自申请日起算。'},
+{id:'i2',q:'下列不属于商标注册绝对拒绝理由的是（ ）。',o:['仅有本商品通用名称','与他人在先使用的未注册商标相同','缺乏显著特征','有欺骗性'],a:1,x:'与他人在先使用商标相同属相对理由。A、C、D为绝对理由。'},
+{id:'i3',q:'著作权中的人身权不包括（ ）。',o:['发表权','署名权','改编权','保护作品完整权'],a:2,x:'改编权属著作财产权。人身权包括发表权、署名权、修改权、保护作品完整权。'},
+{id:'i4',q:'商业秘密的构成要件不包括（ ）。',o:['秘密性','价值性','新颖性','保密性'],a:2,x:'商业秘密三要件：秘密性、价值性、保密性。新颖性是专利条件。'},
+{id:'i5',q:'关于地理标志，正确的是（ ）。',o:['保护的是个人权利','可以任意转让','标识商品来源于特定地区并与该地区因素相关','保护期限为10年'],a:2,x:'地理标志是集体性权利，标识商品的地理来源与品质关联。'}
+]};
+
+// ==================== STORAGE + CLOUD SYNC ====================
+const SK='wg_econ_exam_2026';
+// Supabase 配置 --- 替换为你的 Supabase 项目信息 ---
+const CLOUD={url:'',key:'',enabled:false};
+let sb=null;
+try{if(CLOUD.url&&CLOUD.key){sb=supabase.createClient(CLOUD.url,CLOUD.key);CLOUD.enabled=true;}}catch(e){}
+function dd(){return {
+studyProgress:{econ:{chapter:1,section:0,phase1Start:'',phase2Start:''},ip:{chapter:1,phase1Start:'',phase2Start:''}},
+dailyNotesHistory:[],
+biliLinks:{econ:{},ip:{}},
+errorNotebook:{econ:[],ip:[]},
+pastPaperAnswers:{},
+exHistory:[],
+dailySeed:0
+};}
+function ld(){const r=localStorage.getItem(SK);if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
+function sd(d){localStorage.setItem(SK,JSON.stringify(d));cloudPush(d);}
+async function cloudPush(d){if(!sb)return;try{await sb.from('app_data').upsert({user_id:'u1',payload:d,updated_at:new Date().toISOString()},{onConflict:'user_id'});updateSyncStatus(true);}catch(e){updateSyncStatus(false);}}
+async function cloudPull(){if(!sb)return null;try{const{data}=await sb.from('app_data').select('payload').eq('user_id','u1').single();if(data?.payload){localStorage.setItem(SK,JSON.stringify(data.payload));return data.payload;}}catch(e){updateSyncStatus(false)}return null;}
+function updateSyncStatus(ok){const el=document.getElementById('sync-status');if(!el)return;if(ok){el.textContent='☁ 已同步';el.style.color='var(--green)';setTimeout(()=>{el.textContent='☁'},3000);}else{el.textContent='☁ 离线';el.style.color='var(--t3)';}}
+
+// ==================== APP ====================
+window.App={
+data:ld(),
+async init(){
+this.initTabs();this.initEconChapters();this.initIPChapters();
+this.renderPlanEcon();this.renderPlanIP();this.updateCountdown();
+this.renderDailyAll();this.renderErrorStats();this.renderErrorList();
+this.renderPastPapers();this.loadDateSettings();this.loadNotes();
+setInterval(()=>this.updateCountdown(),60000);
+if(CLOUD.enabled){const cd=await cloudPull();if(cd&&JSON.stringify(cd)!==JSON.stringify(this.data)){this.data=cd;this.renderAll();}}
+},
+renderAll(){
+this.renderPlanEcon();this.renderPlanIP();this.updateCountdown();
+this.renderDailyAll();this.renderErrorStats();this.renderErrorList();
+this.renderPastPapers();this.loadDateSettings();this.loadNotes();
+},
+initTabs(){
+document.querySelectorAll('#tabNav .tab').forEach(t=>{
+t.onclick=()=>{
+document.querySelectorAll('#tabNav .tab').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+const el=document.getElementById('tab-'+t.dataset.tab);
+if(el){el.classList.add('active');
+if(t.dataset.tab==='notebook'){this.renderErrorList();this.renderErrorStats();}
+if(t.dataset.tab==='papers')this.renderPastPapers();
+if(t.dataset.tab==='daily')this.renderDailyAll();
+}}});
+},
+initEconChapters(){
+const ps=document.getElementById('econ-part');ps.innerHTML='<option value="">选部分</option>';
+ECON_PARTS.forEach((p,i)=>{ps.innerHTML+=`<option value="${i}">${p.part}</option>`;});
+this.updateEconChapter();
+const ec=this.data.studyProgress.econ;
+if(ec.chapter){for(let pi=0;pi<ECON_PARTS.length;pi++){for(const c of ECON_PARTS[pi].chapters){if(c.id===ec.chapter){ps.value=pi;this.updateEconChapter();document.getElementById('econ-chapter').value=c.id;this.onEconProgressChange();document.getElementById('econ-section').value=ec.section;return;}}}}
+},
+updateEconChapter(){
+const pi=document.getElementById('econ-part').value;
+const cs=document.getElementById('econ-chapter');const ss=document.getElementById('econ-section');
+cs.innerHTML='<option value="">选章节</option>';ss.innerHTML='<option value="">选节</option>';
+if(pi!==''){ECON_PARTS[pi].chapters.forEach(c=>{cs.innerHTML+=`<option value="${c.id}">第${c.id}章 ${c.name}</option>`;});}
+},
+onEconProgressChange(){
+const cid=parseInt(document.getElementById('econ-chapter').value)||0;
+const ss=document.getElementById('econ-section');ss.innerHTML='<option value="">选节</option>';
+if(cid){for(const p of ECON_PARTS){for(const c of p.chapters){if(c.id===cid&&c.sec){c.sec.forEach((s,i)=>{ss.innerHTML+=`<option value="${i}">${s}</option>`;})}}}}
+},
+initIPChapters(){
+const s=document.getElementById('ip-chapter');s.innerHTML='<option value="">选章节</option>';
+IP_CHS.forEach(c=>{s.innerHTML+=`<option value="${c.id}">第${c.id}章 ${c.name}</option>`;});
+const sv=this.data.studyProgress.ip.chapter;if(sv)s.value=sv;
+},
+saveProgress(){
+const ec=parseInt(document.getElementById('econ-chapter').value)||this.data.studyProgress.econ.chapter||1;
+const es=parseInt(document.getElementById('econ-section').value)||0;
+const ip=parseInt(document.getElementById('ip-chapter').value)||this.data.studyProgress.ip.chapter||1;
+this.data.studyProgress.econ.chapter=ec;this.data.studyProgress.econ.section=es;
+this.data.studyProgress.ip.chapter=ip;sd(this.data);
+this.renderPlanEcon();this.renderPlanIP();this.toast('进度已保存');
+},
+loadDateSettings(){
+const d=this.data.studyProgress;
+document.getElementById('econ-p1-start').value=d.econ.phase1Start||'';
+document.getElementById('econ-p2-start').value=d.econ.phase2Start||'';
+document.getElementById('ip-p1-start').value=d.ip.phase1Start||'';
+document.getElementById('ip-p2-start').value=d.ip.phase2Start||'';
+},
+saveDateSettings(){
+this.data.studyProgress.econ.phase1Start=document.getElementById('econ-p1-start').value;
+this.data.studyProgress.econ.phase2Start=document.getElementById('econ-p2-start').value;
+this.data.studyProgress.ip.phase1Start=document.getElementById('ip-p1-start').value;
+this.data.studyProgress.ip.phase2Start=document.getElementById('ip-p2-start').value;
+sd(this.data);this.renderPlanEcon();this.renderPlanIP();this.toast('日期已保存');
+},
+getPhase(today,p1,p2){
+if(!today||!p1)return 1;const now=new Date(today);
+const d1=new Date(p1);if(now<d1)return 0;
+if(!p2||now<new Date(p2))return 1;return 2;
+},
+getPhaseProgress(type){
+const d=this.data.studyProgress[type];
+if(type==='econ'){const done=d.chapter-1+d.section/4;return Math.min(100,Math.round(done/ECON_TOTAL*100));}
+else{const done=d.chapter-1;return Math.min(100,Math.round(done/IP_TOTAL*100));}
+},
+getCurrentChapter(type){
+const d=this.data.studyProgress[type];
+if(type==='econ'){for(const p of ECON_PARTS){for(const c of p.chapters){if(c.id===d.chapter)return{chapter:c,section:d.section};}}return{chapter:ECON_PARTS[0].chapters[0],section:0};}
+else{const c=IP_CHS.find(x=>x.id===d.chapter);return{chapter:c||IP_CHS[0]};}
+},
+renderPlanEcon(){
+const today=new Date().toISOString().split('T')[0];
+const d=this.data.studyProgress.econ;
+const p1=d.phase1Start||today;const p2=d.phase2Start||'';
+const cp=this.getPhase(today,p1,p2);
+const pp=cp>=2?100:this.getPhaseProgress('econ');
+const pr2=cp>2?100:0;
+const ci=this.getCurrentChapter('econ');
+let st='';if(ci.chapter&&ci.chapter.sec&&ci.chapter.sec[ci.section])st=ci.chapter.sec[ci.section];
+document.getElementById('plan-econ').innerHTML=`
+<div class="pc ${cp===1?'cur':''}"><div class="pn">阶段一：精讲课 + 章节习题</div>
+<div class="pm"><span>${p1} 起</span>${p2?`<span>至 ${p2}</span>`:''}<span>讲师：武小唐 / 刘艳霞</span></div>
+<div class="pw" style="margin-top:8px"><div class="pl"><span>听课进度</span><span class="pct">${pp}%</span></div><div class="pb"><div class="pf b" style="width:${pp}%"></div></div></div>
+${cp===1?'<span class="badge cur">● 当前</span>':(cp>1?'<span class="badge done">已完成</span>':'<span class="badge up">待开始</span>')}</div>
+<div class="pc ${cp===2?'cur':''}"><div class="pn">阶段二：真题 + 错题复习</div>
+<div class="pm"><span>${p2||'待设置'}</span><span>考试前</span></div>
+<div class="pw" style="margin-top:8px"><div class="pl"><span>复习进度</span><span class="pct">${pr2}%</span></div><div class="pb"><div class="pf g" style="width:${pr2}%"></div></div></div>
+${cp===2?'<span class="badge cur">● 当前</span>':(cp>2?'<span class="badge done">已完成</span>':'<span class="badge up">待开始</span>')}</div>
+<div style="font-size:12px;color:var(--t2);margin-top:8px">当前：第${ci.chapter.id}章 ${ci.chapter.name}${st?' / '+st:''}</div>`;
+},
+renderPlanIP(){
+const today=new Date().toISOString().split('T')[0];
+const d=this.data.studyProgress.ip;
+const p1=d.phase1Start||today;const p2=d.phase2Start||'';
+const cp=this.getPhase(today,p1,p2);
+const pp=cp>=2?100:this.getPhaseProgress('ip');
+const pr2=cp>2?100:0;
+const ci=this.getCurrentChapter('ip');
+document.getElementById('plan-ip').innerHTML=`
+<div class="pc ${cp===1?'cur':''}"><div class="pn">阶段一：刷题一个月</div>
+<div class="pm"><span>${p1} 起</span>${p2?`<span>至 ${p2}</span>`:''}</div>
+<div class="pw" style="margin-top:8px"><div class="pl"><span>刷题进度</span><span class="pct">${pp}%</span></div><div class="pb"><div class="pf p" style="width:${pp}%"></div></div></div>
+${cp===1?'<span class="badge cur" style="background:var(--pl);color:var(--purple)">● 当前</span>':(cp>1?'<span class="badge done">已完成</span>':'<span class="badge up">待开始</span>')}</div>
+<div class="pc ${cp===2?'cur':''}"><div class="pn">阶段二：真题 + 错题复习</div>
+<div class="pm"><span>${p2||'待设置'}</span><span>考试前</span></div>
+<div class="pw" style="margin-top:8px"><div class="pl"><span>复习进度</span><span class="pct">${pr2}%</span></div><div class="pb"><div class="pf g" style="width:${pr2}%"></div></div></div>
+${cp===2?'<span class="badge cur" style="background:var(--pl);color:var(--purple)">● 当前</span>':(cp>2?'<span class="badge done">已完成</span>':'<span class="badge up">待开始</span>')}</div>
+<div style="font-size:12px;color:var(--t2);margin-top:8px">当前：第${ci.chapter.id}章 ${ci.chapter.name}</div>`;
+},
+updateCountdown(){
+const examDate=new Date('2026-11-07T08:30:00+08:00');
+const now=new Date();const diff=examDate-now;
+const days=Math.max(0,Math.ceil(diff/(1000*60*60*24)));
+const el=document.getElementById('cd-days');if(!el)return;
+el.innerHTML=days+'<small> 天</small>';
+const totalDays=Math.ceil((examDate-new Date('2026-07-01T00:00:00+08:00'))/(1000*60*60*24));
+const elapsed=totalDays-days;
+const pct=totalDays>0?Math.min(100,Math.round(elapsed/totalDays*100)):0;
+const bar=document.getElementById('cd-bar');if(bar)bar.style.width=pct+'%';
+},
+
+// ==================== DAILY STUDY ====================
+rerollDaily(){
+this.data.dailySeed=Date.now();sd(this.data);
+this.renderDailyAll();this.toast('已刷新今日学习内容');
+},
+renderDailyAll(){
+this.renderDailyCourse();
+this.renderDailyExercises();
+this.renderDailyReview();
+},
+// ---- Daily Course ----
+renderDailyCourse(){
+const ciE=this.getCurrentChapter('econ');
+const linksE=this.data.biliLinks.econ||{};
+const keE='ch'+ciE.chapter.id;const savedE=linksE[keE]||'';
+
+document.getElementById('daily-course').innerHTML=`
+<div class="course-info"><strong>建议学习时长：约1小时</strong>（经济基础精讲课程 2-3个视频）</div>
+<div class="st">经济基础 · 武小唐 / 刘艳霞</div>
+<div style="margin-bottom:8px">
+<div style="font-size:13px;color:var(--t2);margin-bottom:6px">当前章节：第${ciE.chapter.id}章 ${ciE.chapter.name}</div>
+<a class="video-link" href="${BILI_DEFAULTS.wu}" target="_blank"><div class="v-dot"></div><div class="v-info"><div class="v-title">武小唐 2026中级经济师精讲</div><div class="v-meta">B站搜索最新课程</div></div><span style="font-size:18px;color:var(--t3)">↗</span></a>
+<a class="video-link" href="${BILI_DEFAULTS.liu}" target="_blank"><div class="v-dot" style="background:var(--green)"></div><div class="v-info"><div class="v-title">刘艳霞 2026中级经济师精讲班</div><div class="v-meta">B站搜索最新课程 · 经典母题</div></div><span style="font-size:18px;color:var(--t3)">↗</span></a>
+<a class="video-link" href="${biliChapterUrl('econ',ciE.chapter.id)}" target="_blank"><div class="v-dot" style="background:var(--purple)"></div><div class="v-info"><div class="v-title">第${ciE.chapter.id}章 ${ciE.chapter.name} 相关课程</div><div class="v-meta">B站搜索本章节课程</div></div><span style="font-size:18px;color:var(--t3)">↗</span></a>
+<div style="margin-top:6px"><input type="text" id="bili-e-url" value="${savedE}" placeholder="粘贴你找到的视频直链..."><button class="btn btn-sm btn-p" style="margin-top:4px" onclick="App.saveBili('econ')">保存</button>${savedE?` <a href="${savedE}" target="_blank" class="btn btn-sm">打开已存链接</a>`:''}</div>
+</div>`;
+},
+saveBili(type){
+const url=document.getElementById('bili-'+type[0]+'-url').value.trim();
+const ci=this.getCurrentChapter(type);const key='ch'+ci.chapter.id;
+if(!this.data.biliLinks[type])this.data.biliLinks[type]={};
+if(url)this.data.biliLinks[type][key]=url;else delete this.data.biliLinks[type][key];
+sd(this.data);this.toast('链接已保存');
+},
+// ---- Daily Exercises (one-by-one mode) ----
+switchExSubject(s,btn){
+btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+this._exCurrentSubj=s;this._exCurrentIdx=0;
+this.renderOneExercise();
+},
+renderDailyExercises(){
+const ciE=this.getCurrentChapter('econ');const ciI=this.getCurrentChapter('ip');
+const chE=ciE.chapter.id;const chI=ciI.chapter.id;
+
+function pickQ(qbank,currentCh,count){
+const curQ=qbank.filter(q=>q.ch===currentCh);
+const revQ=qbank.filter(q=>{const diff=currentCh-q.ch;return diff>0&&diff<=5;});
+const othQ=qbank.filter(q=>q.ch!==currentCh&&!revQ.includes(q));
+let sel=[];const add=(arr,n)=>{const sh=[...arr].sort(()=>Math.random()-.5);sel=sel.concat(sh.slice(0,n));};
+add(curQ,Math.min(Math.ceil(count*.5),curQ.length));
+add(revQ,Math.min(Math.ceil(count*.35),revQ.length));
+if(sel.length<count)add(othQ,count-sel.length);
+return sel.slice(0,count);
+}
+
+const seed=(this.data.dailySeed||Date.now())%1000;
+const qE=pickQ(ECON_QBANK,chE,20);const qI=pickQ(IP_QBANK,chI,15);
+this._exQuestions={econ:qE.map(q=>({...q,subject:'econ',answered:false,userAns:null,correct:false})),
+ip:qI.map(q=>({...q,subject:'ip',answered:false,userAns:null,correct:false}))};
+
+document.getElementById('ex-summary').innerHTML=`<strong>经济基础</strong>：第${chE}章 ${ciE.chapter.name} · <strong>知识产权</strong>：第${chI}章 ${ciI.chapter.name}<br>每题作答后即时显示解析，答错自动加入错题本。`;
+
+// Reset tabs
+const tabs=document.getElementById('ex-tabs');
+if(tabs){tabs.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));}
+this._exCurrentSubj='econ';this._exCurrentIdx=0;
+this.renderOneExercise();
+},
+renderOneExercise(){
+const subj=this._exCurrentSubj||'econ';
+const qs=this._exQuestions[subj]||[];
+const idx=this._exCurrentIdx||0;
+const container=document.getElementById('daily-exercises');
+
+if(idx>=qs.length){
+// All done for this subject
+const total=qs.length;const correct=qs.filter(q=>q.correct).length;
+const otherSubj=subj==='econ'?'ip':'econ';const otherQs=this._exQuestions[otherSubj]||[];
+const otherDone=otherQs.filter(q=>q.answered).length;const otherTotal=otherQs.length;
+container.innerHTML=`
+<div class="ex-done"><div class="ex-score" style="color:${correct/total>=.7?'var(--green)':'var(--amber)'}">${correct}/${total}</div>
+<div class="ex-sm">${subj==='econ'?'经济基础':'知识产权'} 已完成</div>
+<div class="ex-sm" style="margin-top:8px;color:var(--t2)">正确率 ${total>0?Math.round(correct/total*100):0}%</div>
+${otherDone<otherTotal?`<button class="btn btn-p" style="margin-top:16px" onclick="App.switchExSubject('${otherSubj}',document.querySelector('#ex-tabs .tab:nth-child(${otherSubj==='econ'?1:2})'));document.querySelector('#ex-tabs .tab:nth-child(${otherSubj==='econ'?1:2})').classList.add('active');document.querySelector('#ex-tabs .tab:nth-child(${subj==='econ'?1:2})').classList.remove('active');App._exCurrentIdx=otherQs.findIndex(q=>!q.answered);if(App._exCurrentIdx<0)App._exCurrentIdx=0;App.renderOneExercise();">切换到${otherSubj==='econ'?'经济基础':'知识产权'}</button>`:''}
+${otherDone>=otherTotal?`<button class="btn btn-p" style="margin-top:16px" onclick="App.rerollDaily()">换一批新题</button>`:''}
+</div>`;
+return;
+}
+
+const q=qs[idx];
+const progTotal=qs.length;const progDone=qs.filter(q=>q.answered).length;
+
+// Progress dots
+let dots='';
+for(let i=0;i<progTotal;i++){
+let cls='';if(i<idx){
+const aq=qs[i];
+cls=aq.answered?(aq.correct?'done':'wrong-dot'):'';
+}else if(i===idx)cls='cur';
+dots+=`<span class="${cls}" style="${i===idx?'background:var(--accent);':''}"></span>`;
+}
+
+const answered=q.answered;
+const labels=['A','B','C','D'];
+
+container.innerHTML=`
+<div class="ex-one"><div class="ex-progress">
+<span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · 第${q.ch||'?'}章</span>
+<span>第 ${idx+1}/${progTotal} 题（已做 ${progDone} 题）</span>
+</div><div class="ex-progress"><div class="prog-dot">${dots}</div></div>
+<div class="ex-q-big">${q.q}</div>
+<div class="ex-opts-big">${q.o.map((opt,oi)=>{
+let cls='ex-opt-big';if(answered){
+if(oi===q.userAns&&oi===q.a)cls+=' corr';
+else if(oi===q.userAns)cls+=' wrong';
+else if(oi===q.a)cls+=' corr';
+}
+return `<label class="${cls}"><input type="radio" name="ex-one" value="${oi}" ${(answered&&oi===q.userAns)?'checked':''} ${answered?'disabled':''}>${labels[oi]}. ${opt}</label>`;}).join('')}</div>
+${answered?`<div class="ex-feedback show ${q.correct?'correct':'wrong'}">
+<div class="fb-title">${q.correct?'✓ 回答正确！':'✗ 回答错误'}</div>
+<div class="fb-exp">${q.correct?'':`正确答案：<strong>${labels[q.a]}</strong> · `}${q.x||''}</div></div>`:''}
+<div class="ex-actions">
+${!answered?`<button class="btn btn-p" onclick="App.submitOneAnswer('${subj}',${idx})">提交答案</button>`:''}
+${answered?`<button class="btn btn-p" onclick="App.nextOneQuestion('${subj}',${idx})">${idx+1>=progTotal?'完成':'下一题 →'}</button>`:''}
+<button class="btn" onclick="App.skipOneQuestion('${subj}',${idx})">跳过</button>
+</div></div>`;
+},
+submitOneAnswer(subj,idx){
+const qs=this._exQuestions[subj];if(!qs||idx>=qs.length)return;
+const sel=document.querySelector('input[name="ex-one"]:checked');
+if(!sel){this.toast('请先选择一个答案');return;}
+const ua=parseInt(sel.value);const q=qs[idx];
+q.userAns=ua;q.answered=true;q.correct=ua===q.a;
+// Save to error notebook if wrong
+if(!q.correct&&!this.isInErrors(subj,q.q)){
+this.data.errorNotebook[subj].push({
+id:'e'+Date.now()+Math.random(),question:q.q,
+options:q.o.map((o,oi)=>String.fromCharCode(65+oi)+'. '+o),
+answer:String.fromCharCode(65+q.a),reason:'',
+chapter:subj==='econ'?('第'+q.ch+'章'):('第'+q.ch+'章'),
+mastered:false,date:new Date().toISOString()
+});
+sd(this.data);this.renderErrorStats();
+}
+this.renderOneExercise();
+},
+nextOneQuestion(subj,idx){
+this._exCurrentIdx=idx+1;this.renderOneExercise();
+},
+skipOneQuestion(subj,idx){
+this._exCurrentIdx=idx+1;this.renderOneExercise();
+},
+isInErrors(subj,qText){
+return (this.data.errorNotebook[subj]||[]).some(e=>e.question===qText);
+},
+// ---- Daily Review ----
+refreshDailyReview(){this.renderDailyReview();this.toast('已换一批');},
+renderDailyReview(){
+const c=document.getElementById('daily-review-list');
+const ee=(this.data.errorNotebook.econ||[]).filter(e=>!e.mastered);
+const ie=(this.data.errorNotebook.ip||[]).filter(e=>!e.mastered);
+const pick=(arr,n)=>{const s=[...arr].sort(()=>Math.random()-.5);return s.slice(0,n);};
+const all=[...pick(ee,5).map(e=>({...e,subj:'econ'})),...pick(ie,5).map(e=>({...e,subj:'ip'}))];
+if(!all.length){c.innerHTML='<div class="empty-state"><p>还没有错题，先去做题吧</p></div>';return;}
+c.innerHTML=all.map(eq=>`
+<div class="review-card"><div class="rh"><span class="rs ${eq.subj==='econ'?'econ':'ip'}">${eq.subj==='econ'?'经济基础':'知识产权'}</span><span style="font-size:11px;color:var(--t3)">${eq.chapter||''}</span></div>
+<div class="rq">${eq.question}</div>
+<div style="font-size:12px;color:var(--t2)">${(eq.options||[]).join('<br>')}</div>
+<button class="btn btn-sm" style="margin-top:6px" onclick="const n=this.nextElementSibling;n.classList.toggle('show');this.textContent=n.classList.contains('show')?'隐藏答案':'查看答案'">查看答案</button>
+<div class="ra">正确答案：<strong>${eq.answer}</strong>${eq.reason?' | 原因：'+eq.reason:''}</div></div>`).join('');
+},
+// ---- Notes ----
+loadNotes(){
+const today=new Date().toISOString().split('T')[0];
+const entry=(this.data.dailyNotesHistory||[]).find(e=>e.date===today);
+document.getElementById('daily-note-econ').value=entry?entry.econ:'';
+document.getElementById('daily-note-ip').value=entry?entry.ip:'';
+this.renderNotesHistory();
+},
+saveDailyNote(type){
+const today=new Date().toISOString().split('T')[0];
+if(!this.data.dailyNotesHistory)this.data.dailyNotesHistory=[];
+let entry=this.data.dailyNotesHistory.find(e=>e.date===today);
+if(!entry){entry={date:today,econ:'',ip:''};this.data.dailyNotesHistory.push(entry);}
+entry[type]=document.getElementById('daily-note-'+type).value;sd(this.data);
+this.toast('笔记已保存');
+},
+
+renderNotesHistory(){
+const c=document.getElementById('notes-history');if(!c)return;
+const hist=(this.data.dailyNotesHistory||[]).filter(e=>e.econ||e.ip).sort((a,b)=>b.date.localeCompare(a.date));
+if(!hist.length){c.innerHTML='<div class="empty-state"><p>暂无历史记录</p></div>';return;}
+c.innerHTML=hist.map(e=>{
+const tagE=e.econ?'经济基础':'';const tagI=e.ip?'知识产权':'';
+const tags=[tagE,tagI].filter(Boolean).join(' + ');
+return `<div class="note-entry"><div class="note-date">${e.date} <span class="note-tag">${tags}</span></div>
+${e.econ?`<div class="note-block"><div class="note-subj">经济基础</div><div class="note-text">${e.econ.replace(/\n/g,'<br>')}</div></div>`:''}
+${e.ip?`<div class="note-block"><div class="note-subj">知识产权</div><div class="note-text">${e.ip.replace(/\n/g,'<br>')}</div></div>`:''}
+</div>`;}).join('');
+},
+exportNotesToWord(){
+const hist=(this.data.dailyNotesHistory||[]).filter(e=>e.econ||e.ip).sort((a,b)=>a.date.localeCompare(b.date));
+if(!hist.length){this.toast('没有笔记可导出');return;}
+let htm=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head><meta charset="UTF-8"><style>
+body{font-family:"Microsoft YaHei","SimSun",sans-serif;font-size:14px;line-height:1.8;padding:30px;color:#333}
+h1{font-size:22px;text-align:center;margin-bottom:20px;color:#2563eb}
+h2{font-size:16px;border-bottom:1px solid #ddd;padding-bottom:4px;margin:20px 0 10px;color:#666}
+.nb{margin-bottom:16px;padding:10px 14px;background:#f8f9fa;border-radius:4px}
+.nd{font-weight:bold;color:#888;margin-top:16px;font-size:13px}
+</style></head><body>
+<h1>2026中级经济师 学习笔记</h1>
+<p style="text-align:center;color:#999;font-size:12px">导出时间：${new Date().toLocaleString('zh-CN')} | 共 ${hist.length} 天</p>`;
+hist.forEach(e=>{
+htm+=`<div class="nd">${e.date}</div>`;
+if(e.econ)htm+=`<h2>经济基础</h2><div class="nb">${e.econ.replace(/\n/g,'<br>')}</div>`;
+if(e.ip)htm+=`<h2>知识产权</h2><div class="nb">${e.ip.replace(/\n/g,'<br>')}</div>`;
+});
+htm+='</body></html>';
+const blob=new Blob(['\ufeff'+htm],{type:'application/msword;charset=utf-8'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+a.download='中级经济师学习笔记_'+(new Date().toISOString().split('T')[0])+'.doc';a.click();
+this.toast('笔记已导出为Word文档');
+},
+
+// ==================== ERROR NOTEBOOK ====================
+renderErrorStats(){
+const ee=(this.data.errorNotebook.econ||[]);const ie=(this.data.errorNotebook.ip||[]);
+document.getElementById('error-stats').innerHTML=`
+<div class="sc"><div class="sn" style="color:var(--accent)">${ee.length}</div><div class="sl">经济基础 错题</div><div style="font-size:11px;color:var(--t3)">${ee.filter(e=>!e.mastered).length} 未掌握</div></div>
+<div class="sc"><div class="sn" style="color:var(--purple)">${ie.length}</div><div class="sl">知识产权 错题</div><div style="font-size:11px;color:var(--t3)">${ie.filter(e=>!e.mastered).length} 未掌握</div></div>`;
+},
+switchErrorSubject(s,btn){
+btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+this.renderErrorList(s);
+},
+renderErrorList(fs){
+const c=document.getElementById('error-list');
+const tabs=c.parentElement.querySelector('.tabs');
+const subj=fs||(tabs.querySelector('.tab.active')?tabs.querySelector('.tab.active').textContent.includes('经济基础')?'econ':'ip':'econ');
+const errs=this.data.errorNotebook[subj]||[];
+if(!errs.length){c.innerHTML='<div class="empty-state"><p>暂无错题</p></div>';return;}
+c.innerHTML=errs.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(eq=>`
+<div class="eq-card ${eq.mastered?'mastered':''}"><div class="eq-header"><div class="eq-question">${eq.question}</div><span style="font-size:11px;color:var(--t3);white-space:nowrap">${eq.date?eq.date.split('T')[0]:''}</span></div>
+<div class="eq-meta">${eq.chapter||''}</div><div style="font-size:12px;color:var(--t2);margin-top:4px">${(eq.options||[]).join(' | ')}</div>
+<div class="eq-answer">正确答案：${eq.answer}</div><div class="eq-reason">错误原因：${eq.reason||'未记录'}</div>
+<div class="eq-actions bg"><button class="btn btn-sm" onclick="App.editErrorQuestion('${subj}','${eq.id}')">编辑</button>
+<button class="btn btn-sm ${eq.mastered?'':'btn-p'}" onclick="App.toggleMastered('${subj}','${eq.id}')">${eq.mastered?'撤销掌握':'标记已掌握'}</button>
+<button class="btn btn-sm btn-d" onclick="App.deleteErrorQuestion('${subj}','${eq.id}')">删除</button></div></div>`).join('');
+},
+openAddErrorModal(){document.getElementById('error-modal').style.display='flex';
+['err-question','err-options','err-answer','err-reason','err-chapter'].forEach(id=>document.getElementById(id).value='');},
+closeAddErrorModal(){document.getElementById('error-modal').style.display='none';},
+addErrorQuestion(){
+const s=document.getElementById('err-subject').value,q=document.getElementById('err-question').value.trim(),
+op=document.getElementById('err-options').value.trim(),a=document.getElementById('err-answer').value.trim(),
+r=document.getElementById('err-reason').value.trim(),ch=document.getElementById('err-chapter').value.trim();
+if(!q){this.toast('请输入题目');return;}if(!a){this.toast('请输入正确答案');return;}
+const opts=op?op.split('\n').filter(o=>o.trim()):[];
+this.data.errorNotebook[s].push({id:'e'+Date.now(),question:q,options:opts,answer:a,reason:r,chapter:ch,mastered:false,date:new Date().toISOString()});
+sd(this.data);this.closeAddErrorModal();this.renderErrorList();this.renderErrorStats();this.toast('已保存');
+},
+editErrorQuestion(s,id){
+const eq=this.data.errorNotebook[s].find(e=>e.id===id);if(!eq)return;
+document.getElementById('edit-err-id').value=id;document.getElementById('edit-err-subject').value=s;
+document.getElementById('edit-err-question').value=eq.question;
+document.getElementById('edit-err-options').value=(eq.options||[]).join('\n');
+document.getElementById('edit-err-answer').value=eq.answer;
+document.getElementById('edit-err-reason').value=eq.reason||'';
+document.getElementById('edit-err-chapter').value=eq.chapter||'';
+document.getElementById('edit-error-modal').style.display='flex';
+},
+closeEditErrorModal(){document.getElementById('edit-error-modal').style.display='none';},
+saveEditError(){
+const id=document.getElementById('edit-err-id').value,s=document.getElementById('edit-err-subject').value;
+const eq=this.data.errorNotebook[s].find(e=>e.id===id);if(!eq)return;
+eq.question=document.getElementById('edit-err-question').value.trim();
+const or=document.getElementById('edit-err-options').value.trim();
+eq.options=or?or.split('\n').filter(o=>o.trim()):[];
+eq.answer=document.getElementById('edit-err-answer').value.trim();
+eq.reason=document.getElementById('edit-err-reason').value.trim();
+eq.chapter=document.getElementById('edit-err-chapter').value.trim();
+sd(this.data);this.closeEditErrorModal();this.renderErrorList();this.renderErrorStats();this.toast('已更新');
+},
+deleteErrorQuestion(s,id){if(!confirm('确定删除？'))return;
+this.data.errorNotebook[s]=this.data.errorNotebook[s].filter(e=>e.id!==id);sd(this.data);
+this.renderErrorList();this.renderErrorStats();this.toast('已删除');},
+toggleMastered(s,id){const eq=this.data.errorNotebook[s].find(e=>e.id===id);if(!eq)return;
+eq.mastered=!eq.mastered;sd(this.data);this.renderErrorList();this.renderErrorStats();
+this.toast(eq.mastered?'已标记为掌握':'已取消掌握标记');},
+
+// ==================== PAST PAPERS ====================
+renderPastPapers(){
+const subj=document.getElementById('paper-subject')?document.getElementById('paper-subject').value:'all';
+let qs=[];
+if(subj==='all'||subj==='econ')qs=qs.concat(PAST_PAPERS.econ.map(q=>({...q,subject:'econ',sn:'经济基础'})));
+if(subj==='all'||subj==='ip')qs=qs.concat(PAST_PAPERS.ip.map(q=>({...q,subj:'ip',sn:'知识产权'})));
+const ans=this.data.pastPaperAnswers||{};
+const total=qs.length,answered=qs.filter(q=>ans[q.id]!==undefined).length;
+const correct=qs.filter(q=>ans[q.id]===q.a).length;
+document.getElementById('paper-stats').innerHTML=`
+<div class="sc"><div class="sn">${total}</div><div class="sl">总题数</div></div>
+<div class="sc"><div class="sn" style="color:var(--accent)">${answered}</div><div class="sl">已作答</div></div>
+<div class="sc"><div class="sn" style="color:var(--green)">${correct}</div><div class="sl">正确</div></div>
+<div class="sc"><div class="sn" style="color:var(--red)">${answered-correct}</div><div class="sl">错误</div></div>`;
+document.getElementById('paper-list').innerHTML=qs.map((q,i)=>{
+const ua=ans[q.id];const ic=ua===q.a;const iw=ua!==undefined&&ua!==q.a;
+return `<div class="pq-card ${ic?'ac':''} ${iw?'aw':''}">
+<div class="pq-num">${q.sn||q.subjectName||''} · 第${i+1}题 ${ua?(ic?'✓':'✗'):''}</div>
+<div class="pq-q">${q.q}</div><div class="pq-opts">${q.o.map((opt,oi)=>{
+let cls='pq-opt';if(ua===oi)cls+=' sel';if(ua&&oi===q.a)cls+=' cc';if(iw&&ua===oi)cls+=' wc';
+return `<label class="${cls}"><input type="radio" name="pq-${q.id}" value="${oi}" ${ua===oi?'checked':''} ${ua?'disabled':''}>${String.fromCharCode(65+oi)}. ${opt}</label>`;}).join('')}</div>
+${!ua?`<button class="btn btn-p btn-sm" onclick="App.submitPP('${q.id}','${q.a}','${q.subject||q.subj}','${q.id.replace(/[ei]/,'')}')">提交答案</button>`:''}
+${ua?`<div class="pq-res ${ic?'correct':'wrong'}"><strong>${ic?'回答正确！':'回答错误'}</strong><br>
+<div class="pq-exp">正确答案：${String.fromCharCode(65+q.a)}。${q.x||''}</div>
+${!ic?`<button class="btn btn-sm" style="margin-top:8px" onclick="App.addFromPP('${q.subject||q.subj}','${q.id.replace(/[ei]/,'')}')" ${this.isAlreadyInErrors(q.subject||q.subj,q.q)?'disabled':''}>${this.isAlreadyInErrors(q.subject||q.subj,q.q)?'已加入错题本':'加入错题本'}</button>`:''}
+<button class="btn btn-sm" style="margin-top:8px;margin-left:8px" onclick="App.resetPP('${q.id}')">重新作答</button></div>`:''}</div>`;}).join('');
+},
+isAlreadyInErrors(s,qText){return(this.data.errorNotebook[s]||[]).some(e=>e.question===qText);},
+submitPP(qId,ca,subj,srcId){
+const sel=document.querySelector(`input[name="pq-${qId}"]:checked`);if(!sel){this.toast('请选择');return;}
+this.data.pastPaperAnswers[qId]=parseInt(sel.value);sd(this.data);
+if(parseInt(sel.value)!==parseInt(ca)){
+const pq=PAST_PAPERS[subj]?PAST_PAPERS[subj].find(q=>q.id.replace(/[ei]/,'')===srcId):null;
+if(pq&&!this.isAlreadyInErrors(subj,pq.q)){
+this.data.errorNotebook[subj].push({id:'e'+Date.now(),question:pq.q,options:pq.o,answer:String.fromCharCode(65+pq.a),reason:'',chapter:'',mastered:false,date:new Date().toISOString()});
+}}this.renderPastPapers();this.renderErrorStats();
+this.toast(parseInt(sel.value)===parseInt(ca)?'正确！':'错误，已加入错题本');
+},
+resetPP(qId){delete this.data.pastPaperAnswers[qId];sd(this.data);this.renderPastPapers();this.toast('已重置');},
+addFromPP(subj,srcId){
+const pq=PAST_PAPERS[subj]?PAST_PAPERS[subj].find(q=>q.id.replace(/[ei]/,'')===srcId):null;
+if(!pq||this.isAlreadyInErrors(subj,pq.q))return;
+this.data.errorNotebook[subj].push({id:'e'+Date.now(),question:pq.q,options:pq.o.map((o,i)=>String.fromCharCode(65+i)+'. '+o),answer:String.fromCharCode(65+pq.a),reason:'',chapter:'',mastered:false,date:new Date().toISOString()});
+sd(this.data);this.renderPastPapers();this.renderErrorStats();this.toast('已加入错题本');
+},
+toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);}
+};
+document.addEventListener('DOMContentLoaded',()=>App.init());
+</script>
+</body>
+</html>
