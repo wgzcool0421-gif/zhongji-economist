@@ -529,7 +529,7 @@ ip:[
 // ==================== STORAGE + CLOUD SYNC ====================
 const SK='wg_econ_exam_2026';
 // Supabase 配置 --- 替换为你的 Supabase 项目信息 ---
-const CLOUD={url:'',key:'',enabled:false};
+const CLOUD={url:'https://rjkwghyfizqqnzljvbvz.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqa3dnaHlmaXpxcW56bGp2YnZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMzQ5MjMsImV4cCI6MjEwMTkxMDkyM30.U4N4GEEYZLNFGzWgqeonQ44B57AGGIeXN6ydsyRWskQ',enabled:true};
 let sb=null;
 try{if(CLOUD.url&&CLOUD.key){sb=supabase.createClient(CLOUD.url,CLOUD.key);CLOUD.enabled=true;}}catch(e){}
 function dd(){return {
