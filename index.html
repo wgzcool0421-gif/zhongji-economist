@@ -14,7 +14,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .header h1{font-size:17px;font-weight:600;white-space:nowrap}
 .header h1 span{color:var(--accent)}
 .tabs{display:flex;gap:4px;background:var(--s2);border-radius:var(--r);padding:3px}
-.tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .tab:hover{color:var(--text)}
 .tab.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .content{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
@@ -172,8 +172,9 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 @media(max-width:700px){
 .grid-2{grid-template-columns:1fr}
 .hi{flex-direction:column;align-items:flex-start}
-.tabs{width:100%;overflow-x:auto}
-.tab{font-size:12px;padding:6px 12px}
+.tabs{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{font-size:12px;padding:6px 10px;flex-shrink:0}
 .fr{flex-direction:column}
 .stats-row{gap:8px}
 .sc{min-width:70px}
@@ -829,28 +830,15 @@ const chE=st.econChapter,chI=st.ipChapter;
 const chEName=(ECON_ALL_CH.find(c=>c.id===chE)||{name:'未知'}).name;
 const chIName=(IP_CHS.find(c=>c.id===chI)||{name:'未知'}).name;
 
-function pickQ(qbank,focusCh,usedArr,count,totalChapters){
-  // Collect question texts already used
-  const usedSet=new Set(usedArr||[]);
-  // Priority 1: focus chapter, not used
+function pickQ(qbank,focusCh,usedArr,count){
+  // Strictly pick questions from today's focus chapter
+  let usedSet=new Set(usedArr||[]);
   let pool=qbank.filter(q=>q.ch===focusCh&&!usedSet.has(q.q));
-  // Priority 2: adjacent chapters (±2), not used
-  if(pool.length<count){
-    const adj=qbank.filter(q=>{
-      const d=Math.abs(q.ch-focusCh);
-      return d>0&&d<=2&&!usedSet.has(q.q)&&!pool.includes(q);
-    });
-    pool=pool.concat(adj);
-  }
-  // Priority 3: any not used
-  if(pool.length<count){
-    const rest=qbank.filter(q=>!usedSet.has(q.q)&&!pool.includes(q));
-    pool=pool.concat(rest);
-  }
-  // If still not enough, recycle used ones
-  if(pool.length<count){
-    const all=[...new Set([...pool,...qbank])];
-    pool=all;
+  // If all questions in this chapter have been used today, reset and reuse
+  if(pool.length===0){
+    usedArr.length=0;
+    usedSet=new Set();
+    pool=qbank.filter(q=>q.ch===focusCh);
   }
   const sh=[...pool].sort(()=>Math.random()-.5);
   const sel=sh.slice(0,Math.min(count,sh.length));
@@ -859,8 +847,8 @@ function pickQ(qbank,focusCh,usedArr,count,totalChapters){
   return sel;
 }
 
-const qE=pickQ(ECON_QBANK,chE,st.usedEcon,20,ECON_TOTAL);
-const qI=pickQ(IP_QBANK,chI,st.usedIP,15,IP_TOTAL);
+const qE=pickQ(ECON_QBANK,chE,st.usedEcon,20);
+const qI=pickQ(IP_QBANK,chI,st.usedIP,15);
 sd(this.data);
 this._exQuestions={econ:qE.map(q=>({...q,subject:'econ',answered:false,userAns:null,correct:false})),
 ip:qI.map(q=>({...q,subject:'ip',answered:false,userAns:null,correct:false}))};
