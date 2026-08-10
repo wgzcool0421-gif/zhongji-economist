@@ -179,6 +179,17 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 .sc{min-width:70px}
 .sc .sn{font-size:20px}
 }
+.user-picker{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:20px;padding:4px 6px 4px 14px;border:1px solid var(--bl);cursor:pointer;font-size:13px;font-weight:600;color:var(--t1);position:relative;user-select:none}
+.user-picker .u-arrow{font-size:10px;color:var(--t3);transition:transform .2s}
+.user-picker.open .u-arrow{transform:rotate(180deg)}
+.user-dropdown{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--card);border:1px solid var(--bl);border-radius:var(--rs);box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:100;min-width:120px;overflow:hidden}
+.user-picker.open .user-dropdown{display:block}
+.user-dropdown .ud-item{padding:10px 16px;cursor:pointer;font-size:13px;color:var(--t1);transition:background .15s;display:flex;align-items:center;gap:8px}
+.user-dropdown .ud-item:hover{background:var(--al)}
+.user-dropdown .ud-item.active{font-weight:600;color:var(--accent);background:var(--al)}
+.user-dropdown .ud-dot{width:8px;height:8px;border-radius:50%}
+.ud-dot.wbb{background:var(--accent)}
+.ud-dot.hgg{background:var(--green)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -186,7 +197,15 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 
 <header class="header"><div class="hi">
 <h1><span>2026</span> 中级经济师备考助手</h1>
-<div style="display:flex;align-items:center;gap:8px"><span id="sync-status" style="font-size:16px">☁</span>
+<div style="display:flex;align-items:center;gap:8px">
+<span id="sync-status" style="font-size:16px">☁</span>
+<div class="user-picker" id="userPicker" onclick="App.toggleUserMenu(event)">
+<span id="curUserLabel">wbb</span><span class="u-arrow">▾</span>
+<div class="user-dropdown">
+<div class="ud-item active" data-user="wbb" onclick="App.switchUser('wbb',event)"><span class="ud-dot wbb"></span> wbb</div>
+<div class="ud-item" data-user="hgg" onclick="App.switchUser('hgg',event)"><span class="ud-dot hgg"></span> hgg</div>
+</div>
+</div>
 <div class="tabs" id="tabNav">
 <button class="tab active" data-tab="plan">学习计划</button>
 <button class="tab" data-tab="daily">每日学习</button>
@@ -527,7 +546,9 @@ ip:[
 ]};
 
 // ==================== STORAGE + CLOUD SYNC ====================
-const SK='wg_econ_exam_2026';
+const SK_BASE='wg_econ_exam_2026';
+let currentUser='wbb';
+function sk(){return SK_BASE+'_'+currentUser;}
 // Supabase 配置 --- 替换为你的 Supabase 项目信息 ---
 const CLOUD={url:'https://rjkwghyfizqqnzljvbvz.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqa3dnaHlmaXpxcW56bGp2YnZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMzQ5MjMsImV4cCI6MjEwMTkxMDkyM30.U4N4GEEYZLNFGzWgqeonQ44B57AGGIeXN6ydsyRWskQ',enabled:true};
 let sb=null;
@@ -541,27 +562,46 @@ pastPaperAnswers:{},
 exHistory:[],
 dailySeed:0
 };}
-function ld(){const r=localStorage.getItem(SK);if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
-function sd(d){localStorage.setItem(SK,JSON.stringify(d));cloudPush(d);}
-async function cloudPush(d){if(!sb)return;try{await sb.from('app_data').upsert({user_id:'u1',payload:d,updated_at:new Date().toISOString()},{onConflict:'user_id'});updateSyncStatus(true);}catch(e){updateSyncStatus(false);}}
-async function cloudPull(){if(!sb)return null;try{const{data}=await sb.from('app_data').select('payload').eq('user_id','u1').single();if(data?.payload){localStorage.setItem(SK,JSON.stringify(data.payload));return data.payload;}}catch(e){updateSyncStatus(false)}return null;}
+function ld(){const r=localStorage.getItem(sk());if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
+function sd(d){localStorage.setItem(sk(),JSON.stringify(d));cloudPush(d);}
+async function cloudPush(d){if(!sb)return;try{await sb.from('app_data').upsert({user_id:currentUser,payload:d,updated_at:new Date().toISOString()},{onConflict:'user_id'});updateSyncStatus(true);}catch(e){updateSyncStatus(false);}}
+async function cloudPull(){if(!sb)return null;try{const{data}=await sb.from('app_data').select('payload').eq('user_id',currentUser).single();if(data?.payload){localStorage.setItem(sk(),JSON.stringify(data.payload));return data.payload;}}catch(e){updateSyncStatus(false)}return null;}
 function updateSyncStatus(ok){const el=document.getElementById('sync-status');if(!el)return;if(ok){el.textContent='☁ 已同步';el.style.color='var(--green)';setTimeout(()=>{el.textContent='☁'},3000);}else{el.textContent='☁ 离线';el.style.color='var(--t3)';}}
 
 // ==================== APP ====================
 window.App={
-data:ld(),
+data:null,
 async init(){
+currentUser=localStorage.getItem('wg_current_user')||'wbb';
+this.updateUserUI();
+this.data=ld();
 this.initTabs();this.initEconChapters();this.initIPChapters();
 this.renderPlanEcon();this.renderPlanIP();this.updateCountdown();
 this.renderDailyAll();this.renderErrorStats();this.renderErrorList();
 this.renderPastPapers();this.loadDateSettings();this.loadNotes();
 setInterval(()=>this.updateCountdown(),60000);
 if(CLOUD.enabled){const cd=await cloudPull();if(cd&&JSON.stringify(cd)!==JSON.stringify(this.data)){this.data=cd;this.renderAll();}}
+document.addEventListener('click',()=>{document.getElementById('userPicker')?.classList.remove('open');});
 },
 renderAll(){
 this.renderPlanEcon();this.renderPlanIP();this.updateCountdown();
 this.renderDailyAll();this.renderErrorStats();this.renderErrorList();
 this.renderPastPapers();this.loadDateSettings();this.loadNotes();
+},
+toggleUserMenu(e){e.stopPropagation();document.getElementById('userPicker').classList.toggle('open');},
+async switchUser(user,e){e.stopPropagation();
+if(user===currentUser){document.getElementById('userPicker').classList.remove('open');return;}
+this.data._savedBeforeSwitch=true;sd(this.data);
+currentUser=user;localStorage.setItem('wg_current_user',user);
+this.updateUserUI();
+this.data=ld();
+if(CLOUD.enabled){const cd=await cloudPull();if(cd){this.data=cd;}}
+this.renderAll();this.renderErrorStats();this.renderErrorList();
+document.getElementById('userPicker').classList.remove('open');
+},
+updateUserUI(){
+document.getElementById('curUserLabel').textContent=currentUser;
+document.querySelectorAll('.ud-item').forEach(el=>{el.classList.toggle('active',el.dataset.user===currentUser);});
 },
 initTabs(){
 document.querySelectorAll('#tabNav .tab').forEach(t=>{
