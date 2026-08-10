@@ -611,7 +611,7 @@ function ld(){const r=localStorage.getItem(sk());if(r){try{return JSON.parse(r)}
 function sd(d){localStorage.setItem(sk(),JSON.stringify(d));cloudPush(d);}
 async function cloudPush(d){if(!sb)return;try{await sb.from('app_data').upsert({user_id:currentUser,payload:d,updated_at:new Date().toISOString()},{onConflict:'user_id'});updateSyncStatus(true);}catch(e){updateSyncStatus(false);}}
 async function cloudPull(){if(!sb)return null;try{const{data}=await sb.from('app_data').select('payload').eq('user_id',currentUser).single();if(data?.payload){localStorage.setItem(sk(),JSON.stringify(data.payload));return data.payload;}}catch(e){updateSyncStatus(false)}return null;}
-function updateSyncStatus(ok){const el=document.getElementById('sync-status');if(!el)return;if(ok){el.textContent='☁ 已同步';el.style.color='var(--green)';setTimeout(()=>{el.textContent='☁'},3000);}else{el.textContent='☁ 离线';el.style.color='var(--t3)';}}
+function updateSyncStatus(ok){const el=document.getElementById('sync-status');if(!el)return;el.textContent='☁';if(ok){el.style.color='var(--green)';setTimeout(()=>{el.style.color='';},3000);}else{el.style.color='var(--t3)';}}
 
 // ==================== APP ====================
 window.App={
@@ -949,7 +949,7 @@ mastered:false,date:new Date().toISOString()
 });
 sd(this.data);this.renderErrorStats();
 }
-if(q.correct){this.showCheer();}
+this.showCheer(q.correct);
 this.renderOneExercise();
 },
 nextOneQuestion(subj,idx){
@@ -1135,7 +1135,7 @@ this.data.errorNotebook[subj].push({id:'e'+Date.now(),question:pq.q,options:pq.o
 }}this.renderPastPapers();this.renderErrorStats();
 const ppCorrect=parseInt(sel.value)===parseInt(ca);
 this.toast(ppCorrect?'正确！':'错误，已加入错题本');
-if(ppCorrect)this.showCheer();
+this.showCheer(ppCorrect);
 },
 resetPP(qId){delete this.data.pastPaperAnswers[qId];sd(this.data);this.renderPastPapers();this.toast('已重置');},
 addFromPP(subj,srcId){
@@ -1146,35 +1146,31 @@ sd(this.data);this.renderPastPapers();this.renderErrorStats();this.toast('已加
 },
 toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
 clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);},
-showCheer(){
+showCheer(correct){
 const ov=document.getElementById('cheerOverlay');
 const ct=document.getElementById('cheerContent');
 if(currentUser==='hgg'){
-// 小猪拉屎
-ct.innerHTML=`
-<div style="position:relative;display:inline-block">
-<span class="cheer-sparkles">💩</span>
-<span class="cheer-char hgg-chick">🐷</span>
-<span class="cheer-rice rice1" style="bottom:14px">💩</span>
-<span class="cheer-rice rice2" style="bottom:14px">💩</span>
-<span class="cheer-rice rice3" style="bottom:14px">💩</span>
-</div>
-<div class="cheer-text">答对了！</div>
-<div class="cheer-sub">小猪拉屎.gif</div>`;
+if(correct){
+ct.innerHTML=`<span class="cheer-char" style="font-size:80px">🐤</span>`;
 }else{
-// wbb: 彼得堡居民盲盒人物鼓掌
 ct.innerHTML=`
 <div style="position:relative;display:inline-block">
-<span class="cheer-sparkles">✨</span>
-<span class="cheer-char">🧑‍🎄</span>
-<span class="cheer-hands">👏</span>
-</div>
-<div class="cheer-text">太棒了！</div>
-<div class="cheer-sub">彼得堡居民为你鼓掌！</div>`;
+<span class="cheer-char" style="font-size:60px;animation:cheerShake .3s ease-in-out infinite alternate">🐷</span>
+<span class="cheer-rice rice1" style="bottom:10px;font-size:16px">💩</span>
+<span class="cheer-rice rice2" style="bottom:10px;font-size:16px">💩</span>
+<span class="cheer-rice rice3" style="bottom:10px;font-size:16px">💩</span>
+</div>`;
+}
+}else{
+if(correct){
+ct.innerHTML=`<span class="cheer-char" style="font-size:80px">👍</span>`;
+}else{
+ct.innerHTML=`<span class="cheer-char" style="font-size:80px">🪙</span>`;
+}
 }
 ov.classList.add('show');
 clearTimeout(ov._t);
-ov._t=setTimeout(()=>{ov.classList.remove('show');},1500);
+ov._t=setTimeout(()=>{ov.classList.remove('show');},1000);
 },
 // ==================== KNOWLEDGE TIPS ====================
 _tipsData:null,
