@@ -141,10 +141,6 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 /* Exercise one-by-one */
 .ex-one{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px}
 .ex-one .ex-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:12px;color:var(--t2)}
-.ex-one .ex-progress .prog-dot{display:flex;gap:4px}
-.ex-one .ex-progress .prog-dot span{width:8px;height:8px;border-radius:50%;background:#e5e7eb}
-.ex-one .ex-progress .prog-dot span.done{background:var(--green)}
-.ex-one .ex-progress .prog-dot span.wrong-dot{background:var(--red)}
 .ex-one .ex-q-big{font-size:15px;line-height:1.8;margin-bottom:16px}
 .ex-flag{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;margin-bottom:16px;border-radius:8px;background:#fff7ed;border:1px solid #fed7aa;font-size:13px;line-height:1.6;color:#9a3412}
 .ex-flag .ex-flag-badge{font-weight:700;white-space:nowrap;color:#c2410c}
@@ -2331,16 +2327,6 @@ return;
 const q=qs[idx];
 const progTotal=qs.length;const progDone=qs.filter(q=>q.answered).length;
 
-// Progress dots
-let dots='';
-for(let i=0;i<progTotal;i++){
-let cls='';if(i<idx){
-const aq=qs[i];
-cls=aq.answered?(aq.correct?'done':'wrong-dot'):'';
-}else if(i===idx)cls='cur';
-dots+=`<span class="${cls}" style="${i===idx?'background:var(--accent);':''}"></span>`;
-}
-
 const answered=q.answered;
 const labels=['A','B','C','D'];
 
@@ -2348,7 +2334,7 @@ container.innerHTML=`
 <div class="ex-one"><div class="ex-progress">
 <span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · ${q.ch>=1?'第'+q.ch+'章':'综合练习'}</span>
 <span>第 ${idx+1}/${progTotal} 题（已做 ${progDone} 题）</span>
-</div><div class="ex-progress"><div class="prog-dot">${dots}</div></div>
+</div>
 <div class="ex-q-big">${q.q}</div>
 ${q.flag?`<div class="ex-flag${q.flag.indexOf('源站答案疑似错误')===0?' ex-flag-err':''}"><span class="ex-flag-badge">⚠ ${q.flag.indexOf('源站答案疑似错误')===0?'源站答案疑似错误':'答案存疑'}</span><span>${q.flag}</span></div>`:''}
 <div class="ex-opts-big">${q.o.map((opt,oi)=>{
