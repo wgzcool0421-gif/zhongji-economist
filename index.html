@@ -198,27 +198,6 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 .ud-dot.wbb{background:var(--accent)}
 .ud-dot.hgg{background:var(--green)}
 
-/* ===== Celebration Overlay ===== */
-.cheer-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
-.cheer-overlay.show{opacity:1}
-.cheer-overlay .cheer-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3)}
-.cheer-overlay .cheer-card{position:relative;background:var(--card);border-radius:20px;padding:24px 32px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.25);animation:cheerPop .4s ease-out;max-width:280px;z-index:1}
-@keyframes cheerPop{0%{transform:scale(.5) translateY(40px);opacity:0}60%{transform:scale(1.1) translateY(-5px)}100%{transform:scale(1) translateY(0);opacity:1}}
-.cheer-char{font-size:80px;line-height:1;animation:cheerBounce .6s ease-in-out infinite alternate;display:block;margin-bottom:8px}
-@keyframes cheerBounce{0%{transform:translateY(0)}100%{transform:translateY(-18px)}}
-.cheer-char.hgg-chick{animation:cheerShake .3s ease-in-out infinite alternate}
-@keyframes cheerShake{0%{transform:translateY(0) rotate(-3deg)}100%{transform:translateY(4px) rotate(3deg)}}
-.cheer-hands{font-size:40px;animation:cheerClap .5s ease-in-out infinite alternate;display:inline-block}
-@keyframes cheerClap{0%{transform:scaleX(1) rotate(0deg)}100%{transform:scaleX(1.3) rotate(-8deg)}}
-.cheer-text{font-size:16px;font-weight:700;color:var(--accent);margin-top:8px}
-.cheer-sub{font-size:12px;color:var(--t2);margin-top:4px}
-.cheer-sparkles{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:24px;animation:cheerSparkle .8s ease-out infinite alternate}
-@keyframes cheerSparkle{0%{opacity:.4;transform:translateX(-50%) scale(.8)}100%{opacity:1;transform:translateX(-50%) scale(1.2)}}
-.cheer-rice{position:absolute;bottom:8px;font-size:14px;animation:riceBounce .5s ease-in-out infinite alternate}
-@keyframes riceBounce{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
-.rice1{left:40px;animation-delay:0s}
-.rice2{left:50%;transform:translateX(-50%);animation-delay:.15s}
-.rice3{right:40px;animation-delay:.3s}
 /* ===== Knowledge Tips ===== */
 .tip-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;transition:all .15s}
 .tip-card:hover{border-color:var(--purple);box-shadow:0 2px 8px rgba(124,58,237,.08)}
@@ -339,7 +318,6 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 </div>
 
 <div class="toast" id="toast"></div>
-<div id="cheerOverlay" class="cheer-overlay"><div class="cheer-bg"></div><div class="cheer-card"><div id="cheerContent"></div></div></div>
 
 <!-- Add Error Modal -->
 <div class="modal-overlay" id="error-modal" style="display:none" onclick="if(event.target===this)App.closeAddErrorModal()">
@@ -2386,7 +2364,6 @@ mastered:false,date:new Date().toISOString()
 });
 sd(this.data);this.renderErrorStats();
 }
-this.showCheer(q.correct);
 this.renderOneExercise();
 },
 nextOneQuestion(subj,idx){
@@ -2537,32 +2514,6 @@ this.toast(eq.mastered?'已标记为掌握':'已取消掌握标记');},
 // ==================== PAST PAPERS ====================
 toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
 clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);},
-showCheer(correct){
-const ov=document.getElementById('cheerOverlay');
-const ct=document.getElementById('cheerContent');
-if(currentUser==='hgg'){
-if(correct){
-ct.innerHTML=`<span class="cheer-char" style="font-size:80px">🐤</span>`;
-}else{
-ct.innerHTML=`
-<div style="position:relative;display:inline-block">
-<span class="cheer-char" style="font-size:60px;animation:cheerShake .3s ease-in-out infinite alternate">🐷</span>
-<span class="cheer-rice rice1" style="bottom:10px;font-size:16px">💩</span>
-<span class="cheer-rice rice2" style="bottom:10px;font-size:16px">💩</span>
-<span class="cheer-rice rice3" style="bottom:10px;font-size:16px">💩</span>
-</div>`;
-}
-}else{
-if(correct){
-ct.innerHTML=`<span class="cheer-char" style="font-size:80px">👍</span>`;
-}else{
-ct.innerHTML=`<span class="cheer-char" style="font-size:80px">🪙</span>`;
-}
-}
-ov.classList.add('show');
-clearTimeout(ov._t);
-ov._t=setTimeout(()=>{ov.classList.remove('show');},1000);
-},
 // ==================== KNOWLEDGE TIPS ====================
 _tipsData:null,
 tipsData(){
