@@ -2042,7 +2042,7 @@ errorNotebook:{econ:[],ip:[]},
 pastPaperAnswers:{},
 exHistory:[],
 dailySeed:0,
-dailyExState:{date:'',econPtr:1,ipPtr:1,usedEcon:[],usedIP:[]},
+dailyExState:{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[]},
 tipsState:{date:'',econShown:[],ipShown:[]}
 };}
 function ld(){const r=localStorage.getItem(sk());if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
@@ -2243,45 +2243,65 @@ getDailyBank(subj){
   return IP_QBANK.map(q=>({...q,subject:'ip'}))
     .concat(PAST_PAPERS.ip.map(q=>({...q,ch:PAST_CH_I[q.id]||1,subject:'ip',type:q.type||'single'})));
 },
-// 按章节顺序轮动选取 count 题；某章不足则顺延后续章节；跨天不重复
+// 按章节顺序轮动选取 count 题；某章不足则顺延后续章节；跨天不重复（按题号索引去重，耗尽自动重置）
 pickChapterRotation(bank,startCh,usedArr,count){
-  const total=bank.length?bank[0].subject==='econ'?ECON_TOTAL:IP_TOTAL:37;
-  let usedSet=new Set(usedArr||[]);
-  if(usedSet.size>=bank.length){usedArr.length=0;usedSet=new Set();}
-  let collected=[];let ch=startCh;let guard=0;
-  while(collected.length<count&&guard<=total){
-    const inCh=bank.filter(q=>q.ch===ch&&!usedSet.has(q.q));
-    collected=collected.concat(inCh);
-    if(collected.length>=count)break;
-    ch=(ch%total)+1;guard++;
-  }
+  if(!Array.isArray(usedArr))usedArr=[];
+  if(usedArr.some(x=>typeof x!=='number'))usedArr.length=0;
+  const total=bank.length?(bank[0].subject==='econ'?ECON_TOTAL:IP_TOTAL):37;
+  // 只取有效章节的题目（ch:0/undefined 为未归类，不进入每日轮动）
+  const validBank=bank.map((q,i)=>({q,i})).filter(({q})=>q.ch>=1&&q.ch<=total);
+  const pick=(usedSet)=>{
+    let collected=[];let ch=startCh;let guard=0;
+    while(collected.length<count&&guard<=total){
+      const inCh=validBank.filter(({q,i})=>q.ch===ch&&!usedSet.has(i)).sort(()=>Math.random()-.5);
+      collected=collected.concat(inCh);
+      if(collected.length>=count)break;
+      ch=(ch%total)+1;guard++;
+    }
+    if(collected.length<count){
+      const rest=validBank.filter(({q,i})=>!usedSet.has(i)&&!collected.some(c=>c.i===i))
+        .sort(()=>Math.random()-.5);
+      collected=collected.concat(rest);
+    }
+    return collected.slice(0,count);
+  };
+  let usedSet=new Set(usedArr);
+  let collected=pick(usedSet);
+  // 若题库已耗尽仍不足 count，重置已做记录再取一次，保证每日必有题
   if(collected.length<count){
-    const rest=bank.filter(q=>!usedSet.has(q.q)&&!collected.includes(q))
-      .sort((a,b)=>a.ch-b.ch).slice(0,count-collected.length);
-    collected=collected.concat(rest);
+    usedArr.length=0;usedSet=new Set();
+    collected=pick(usedSet);
   }
-  collected=collected.slice(0,count);
-  collected.forEach(q=>{if(!usedSet.has(q.q))usedArr.push(q.q);});
-  const lastCh=collected.length?collected[collected.length-1].ch:startCh;
+  collected.forEach(({i})=>usedSet.add(i));
+  usedArr.length=0;usedSet.forEach(i=>usedArr.push(i));
+  const lastQ=collected[collected.length-1];
+  const lastCh=lastQ?lastQ.q.ch:startCh;
   const nextPtr=(lastCh%total)+1;
-  return {sel:collected,nextPtr};
+  return {sel:collected.map(c=>c.q),nextPtr};
 },
 renderDailyExercises(){
   const today=new Date().toISOString().split('T')[0];
-  let st=this.data.dailyExState||{date:'',econPtr:1,ipPtr:1,usedEcon:[],usedIP:[]};
+  let st=this.data.dailyExState||{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[]};
   if(!this.data.dailyExState)this.data.dailyExState=st;
+  // 兼容旧版 localStorage：旧 usedEcon/usedIP 存的是题干字符串，重置为索引数组
+  if(!st.usedEconIdx)st.usedEconIdx=[];
+  if(!st.usedIPIdx)st.usedIPIdx=[];
+  if(Array.isArray(st.usedEcon)&&st.usedEcon.some(x=>typeof x!=='number')){st.usedEconIdx=[];delete st.usedEcon;}
+  if(Array.isArray(st.usedIP)&&st.usedIP.some(x=>typeof x!=='number')){st.usedIPIdx=[];delete st.usedIP;}
   if(st.date!==today){st.date=today;sd(this.data);}
   const bankE=this.getDailyBank('econ'),bankI=this.getDailyBank('ip');
-  const rE=this.pickChapterRotation(bankE,st.econPtr,st.usedEcon,50);
-  const rI=this.pickChapterRotation(bankI,st.ipPtr,st.usedIP,50);
+  const rE=this.pickChapterRotation(bankE,st.econPtr,st.usedEconIdx,50);
+  const rI=this.pickChapterRotation(bankI,st.ipPtr,st.usedIPIdx,50);
   st.econPtr=rE.nextPtr;st.ipPtr=rI.nextPtr;sd(this.data);
   this._exQuestions={
     econ:rE.sel.map(q=>({...q,subject:'econ',answered:false,userAns:null,correct:false})),
     ip:rI.sel.map(q=>({...q,subject:'ip',answered:false,userAns:null,correct:false}))
   };
-  const minE=Math.min(...rE.sel.map(q=>q.ch)),maxE=Math.max(...rE.sel.map(q=>q.ch));
-  const minI=Math.min(...rI.sel.map(q=>q.ch)),maxI=Math.max(...rI.sel.map(q=>q.ch));
-  document.getElementById('ex-summary').innerHTML=`<strong>今日练习题（每科 50 题，按章节顺序轮动）</strong><br>经济基础：第${minE}–${maxE}章（${rE.sel.length}题） · 知识产权：第${minI}–${maxI}章（${rI.sel.length}题）<br>已含历年真题；每题作答后即时显示解析，答错自动加入错题本。`;
+  const rangeE=rE.sel.filter(q=>q.ch>=1).map(q=>q.ch);
+  const rangeI=rI.sel.filter(q=>q.ch>=1).map(q=>q.ch);
+  const minE=rangeE.length?Math.min(...rangeE):'-',maxE=rangeE.length?Math.max(...rangeE):'-';
+  const minI=rangeI.length?Math.min(...rangeI):'-',maxI=rangeI.length?Math.max(...rangeI):'-';
+  document.getElementById('ex-summary').innerHTML=`<strong>今日练习题（每科 50 题，按章节顺序轮动）</strong><br>经济基础：第${minE}–${maxE}章（${rE.sel.length}题） · 知识产权：第${minI}–${maxI}章（${rI.sel.length}题）<br>已含历年真题；每题作答后即时显示解析。`;
   const tabs=document.getElementById('ex-tabs');
   if(tabs){tabs.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));}
   this._exCurrentSubj='econ';this._exCurrentIdx=0;
@@ -2326,7 +2346,7 @@ const labels=['A','B','C','D'];
 
 container.innerHTML=`
 <div class="ex-one"><div class="ex-progress">
-<span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · 第${q.ch||'?'}章</span>
+<span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · ${q.ch>=1?'第'+q.ch+'章':'综合练习'}</span>
 <span>第 ${idx+1}/${progTotal} 题（已做 ${progDone} 题）</span>
 </div><div class="ex-progress"><div class="prog-dot">${dots}</div></div>
 <div class="ex-q-big">${q.q}</div>
@@ -2359,7 +2379,7 @@ this.data.errorNotebook[subj].push({
 id:'e'+Date.now()+Math.random(),question:q.q,
 options:q.o.map((o,oi)=>String.fromCharCode(65+oi)+'. '+o),
 answer:String.fromCharCode(65+q.a),reason:'',
-chapter:subj==='econ'?('第'+q.ch+'章'):('第'+q.ch+'章'),
+chapter:q.ch>=1?'第'+q.ch+'章':'综合练习',
 mastered:false,date:new Date().toISOString()
 });
 sd(this.data);this.renderErrorStats();
