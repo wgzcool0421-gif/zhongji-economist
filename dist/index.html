@@ -142,6 +142,10 @@ label{font-size:13px;font-weight:500;display:block;margin-bottom:4px}
 .ex-one{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px}
 .ex-one .ex-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:12px;color:var(--t2)}
 .ex-one .ex-q-big{font-size:15px;line-height:1.8;margin-bottom:16px}
+.ex-one .ex-type,.ex-type{display:inline-block;font-size:11px;font-weight:700;line-height:1;padding:3px 8px;border-radius:6px;margin-left:8px;vertical-align:middle}
+.ex-one .ex-type.single,.ex-type.single{background:#e0f2fe;color:#0369a1}
+.ex-one .ex-type.multi,.ex-type.multi{background:#fef3c7;color:#b45309}
+.ex-one .ex-type.indet,.ex-type.indet{background:#fae8ff;color:#a21caf}
 .ex-flag{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;margin-bottom:16px;border-radius:8px;background:#fff7ed;border:1px solid #fed7aa;font-size:13px;line-height:1.6;color:#9a3412}
 .ex-flag .ex-flag-badge{font-weight:700;white-space:nowrap;color:#c2410c}
 .ex-flag-err{background:#fef2f2;border-color:#fecaca;color:#991b1b}
@@ -2330,10 +2334,12 @@ const progTotal=qs.length;const progDone=qs.filter(q=>q.answered).length;
 const answered=q.answered;
 const labels=['A','B','C','D','E','F'];
 const isMulti=Array.isArray(q.a);
+const qtype=isMulti?(q.a.length>=2?'多选':'不定项'):'单选';
+const qtypeCls=qtype==='单选'?'single':(qtype==='多选'?'multi':'indet');
 
 container.innerHTML=`
 <div class="ex-one"><div class="ex-progress">
-<span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · ${q.ch>=1?'第'+q.ch+'章':'综合练习'}</span>
+<span style="font-weight:600">${subj==='econ'?'经济基础':'知识产权'} · ${q.ch>=1?'第'+q.ch+'章':'综合练习'}</span><span class="ex-type ${qtypeCls}">${qtype}</span>
 <span>第 ${idx+1}/${progTotal} 题（已做 ${progDone} 题）</span>
 </div>
 <div class="ex-q-big">${q.q}</div>
@@ -2409,12 +2415,13 @@ const ie=(this.data.errorNotebook.ip||[]).filter(e=>!e.mastered);
 const pick=(arr,n)=>{const s=[...arr].sort(()=>Math.random()-.5);return s.slice(0,n);};
 const all=[...pick(ee,5).map(e=>({...e,subj:'econ'})),...pick(ie,5).map(e=>({...e,subj:'ip'}))];
 if(!all.length){c.innerHTML='<div class="empty-state"><p>还没有错题，先去做题吧</p></div>';return;}
-c.innerHTML=all.map(eq=>`
-<div class="review-card"><div class="rh"><span class="rs ${eq.subj==='econ'?'econ':'ip'}">${eq.subj==='econ'?'经济基础':'知识产权'}</span><span style="font-size:11px;color:var(--t3)">${eq.chapter||''}</span></div>
+c.innerHTML=all.map(eq=>{
+const rqType=(eq.answer||'').includes('、')?'多选':'单选';
+return `<div class="review-card"><div class="rh"><span class="rs ${eq.subj==='econ'?'econ':'ip'}">${eq.subj==='econ'?'经济基础':'知识产权'}</span><span style="font-size:11px;color:var(--t3)">${eq.chapter||''}</span><span class="ex-type ${rqType==='多选'?'multi':'single'}" style="margin-left:auto">${rqType}</span></div>
 <div class="rq">${eq.question}</div>
 <div style="font-size:12px;color:var(--t2)">${(eq.options||[]).join('<br>')}</div>
 <button class="btn btn-sm" style="margin-top:6px" onclick="const n=this.nextElementSibling;n.classList.toggle('show');this.textContent=n.classList.contains('show')?'隐藏答案':'查看答案'">查看答案</button>
-<div class="ra">正确答案：<strong>${eq.answer}</strong>${eq.reason?' | 原因：'+eq.reason:''}</div></div>`).join('');
+<div class="ra">正确答案：<strong>${eq.answer}</strong>${eq.reason?' | 原因：'+eq.reason:''}</div></div>`;}).join('');
 },
 // ---- Notes ----
 loadNotes(){
