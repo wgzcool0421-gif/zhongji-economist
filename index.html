@@ -2042,7 +2042,7 @@ errorNotebook:{econ:[],ip:[]},
 pastPaperAnswers:{},
 exHistory:[],
 dailySeed:0,
-dailyExState:{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[]},
+dailyExState:{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[],econDaily:[],ipDaily:[]},
 tipsState:{date:'',econShown:[],ipShown:[]}
 };}
 function ld(){const r=localStorage.getItem(sk());if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
@@ -2197,7 +2197,8 @@ const bar=document.getElementById('cd-bar');if(bar)bar.style.width=pct+'%';
 // ==================== DAILY STUDY ====================
 rerollDaily(){
 this.data.dailySeed=Date.now();sd(this.data);
-this.renderDailyAll();this.toast('已刷新今日学习内容');
+this.renderDailyCourse();this.renderDailyExercises(true);this.renderDailyReview();
+this.toast('已刷新今日学习内容');
 },
 renderDailyAll(){
 this.renderDailyCourse();
@@ -2231,7 +2232,9 @@ sd(this.data);this.toast('链接已保存');
 // ---- Daily Exercises (one-by-one mode) ----
 switchExSubject(s,btn){
 btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
-this._exCurrentSubj=s;this._exCurrentIdx=0;
+this._exCurrentSubj=s;
+const qs=this._exQuestions[s]||[];const resume=qs.findIndex(q=>!q.answered);
+this._exCurrentIdx=resume>=0?resume:0;
 this.renderOneExercise();
 },
 // 合并历年真题(PAST_PAPERS)进每日练习题库
@@ -2277,34 +2280,55 @@ pickChapterRotation(bank,startCh,usedArr,count){
   const lastQ=collected[collected.length-1];
   const lastCh=lastQ?lastQ.q.ch:startCh;
   const nextPtr=(lastCh%total)+1;
-  return {sel:collected.map(c=>c.q),nextPtr};
+  return {sel:collected.map(c=>({...c.q,_i:c.i})),nextPtr};
 },
-renderDailyExercises(){
+renderDailyExercises(forceNew){
   const today=new Date().toISOString().split('T')[0];
-  let st=this.data.dailyExState||{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[]};
+  let st=this.data.dailyExState||{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[],econDaily:[],ipDaily:[]};
   if(!this.data.dailyExState)this.data.dailyExState=st;
   // 兼容旧版 localStorage：旧 usedEcon/usedIP 存的是题干字符串，重置为索引数组
   if(!st.usedEconIdx)st.usedEconIdx=[];
   if(!st.usedIPIdx)st.usedIPIdx=[];
+  if(!st.econDaily)st.econDaily=[];
+  if(!st.ipDaily)st.ipDaily=[];
   if(Array.isArray(st.usedEcon)&&st.usedEcon.some(x=>typeof x!=='number')){st.usedEconIdx=[];delete st.usedEcon;}
   if(Array.isArray(st.usedIP)&&st.usedIP.some(x=>typeof x!=='number')){st.usedIPIdx=[];delete st.usedIP;}
-  if(st.date!==today){st.date=today;sd(this.data);}
   const bankE=this.getDailyBank('econ'),bankI=this.getDailyBank('ip');
-  const rE=this.pickChapterRotation(bankE,st.econPtr,st.usedEconIdx,50);
-  const rI=this.pickChapterRotation(bankI,st.ipPtr,st.usedIPIdx,50);
-  st.econPtr=rE.nextPtr;st.ipPtr=rI.nextPtr;sd(this.data);
+  // 同一天且已有保存的题集（且非强制刷新）→ 复用，恢复作答进度
+  const hasSaved=(st.econDaily.length>0||st.ipDaily.length>0);
+  const needNew=(st.date!==today)||forceNew||!hasSaved;
+  if(needNew){
+    if(st.date!==today){st.date=today;}
+    const rE=this.pickChapterRotation(bankE,st.econPtr,st.usedEconIdx,50);
+    const rI=this.pickChapterRotation(bankI,st.ipPtr,st.usedIPIdx,50);
+    st.econPtr=rE.nextPtr;st.ipPtr=rI.nextPtr;
+    // 持久化题集（仅存题库索引 _i + 逐题作答状态），避免重开丢失进度
+    st.econDaily=rE.sel.map(q=>({i:q._i,answered:false,userAns:null,correct:false}));
+    st.ipDaily=rI.sel.map(q=>({i:q._i,answered:false,userAns:null,correct:false}));
+    sd(this.data);
+  }
+  // 由保存的题集重建运行期题目对象（含已作答状态）
+  const buildQs=(bank,dailyArr,subj)=>dailyArr.map(d=>{
+    const base=bank[d.i]||{q:'(题目缺失)',o:[],a:0,ch:0};
+    return {...base,subject:subj,answered:d.answered,userAns:d.userAns,correct:d.correct,_i:d.i};
+  });
   this._exQuestions={
-    econ:rE.sel.map(q=>({...q,subject:'econ',answered:false,userAns:null,correct:false})),
-    ip:rI.sel.map(q=>({...q,subject:'ip',answered:false,userAns:null,correct:false}))
+    econ:buildQs(bankE,st.econDaily,'econ'),
+    ip:buildQs(bankI,st.ipDaily,'ip')
   };
-  const rangeE=rE.sel.filter(q=>q.ch>=1).map(q=>q.ch);
-  const rangeI=rI.sel.filter(q=>q.ch>=1).map(q=>q.ch);
+  // 恢复到当前科目第一个未作答的题
+  if(this._exCurrentSubj!=='ip')this._exCurrentSubj='econ';
+  const curQs=this._exQuestions[this._exCurrentSubj]||[];
+  const resume=curQs.findIndex(q=>!q.answered);
+  this._exCurrentIdx=resume>=0?resume:0;
+  const rangeE=st.econDaily.map(d=>bankE[d.i]).filter(q=>q&&q.ch>=1).map(q=>q.ch);
+  const rangeI=st.ipDaily.map(d=>bankI[d.i]).filter(q=>q&&q.ch>=1).map(q=>q.ch);
   const minE=rangeE.length?Math.min(...rangeE):'-',maxE=rangeE.length?Math.max(...rangeE):'-';
   const minI=rangeI.length?Math.min(...rangeI):'-',maxI=rangeI.length?Math.max(...rangeI):'-';
-  document.getElementById('ex-summary').innerHTML=`<strong>今日练习题（每科 50 题，按章节顺序轮动）</strong><br>经济基础：第${minE}–${maxE}章（${rE.sel.length}题） · 知识产权：第${minI}–${maxI}章（${rI.sel.length}题）<br>已含历年真题；每题作答后即时显示解析。`;
+  const doneE=st.econDaily.filter(d=>d.answered).length,doneI=st.ipDaily.filter(d=>d.answered).length;
+  document.getElementById('ex-summary').innerHTML=`<strong>今日练习题（每科 50 题，按章节顺序轮动）</strong><br>经济基础：第${minE}–${maxE}章（${st.econDaily.length}题，已做 ${doneE}） · 知识产权：第${minI}–${maxI}章（${st.ipDaily.length}题，已做 ${doneI}）<br>已含历年真题；每题作答后即时显示解析。未完成关闭后重开会自动恢复进度。`;
   const tabs=document.getElementById('ex-tabs');
-  if(tabs){tabs.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));}
-  this._exCurrentSubj='econ';this._exCurrentIdx=0;
+  if(tabs){tabs.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(this._exCurrentSubj==='ip'?1:0)));}
   this.renderOneExercise();
 },
 renderOneExercise(){
@@ -2313,7 +2337,7 @@ const qs=this._exQuestions[subj]||[];
 const idx=this._exCurrentIdx||0;
 const container=document.getElementById('daily-exercises');
 
-if(idx>=qs.length){
+if(idx>=qs.length||qs.every(q=>q.answered)){
 // All done for this subject
 const total=qs.length;const correct=qs.filter(q=>q.correct).length;
 const otherSubj=subj==='econ'?'ip':'econ';const otherQs=this._exQuestions[otherSubj]||[];
@@ -2395,6 +2419,9 @@ mastered:false,date:new Date().toISOString()
 });
 sd(this.data);this.renderErrorStats();
 }
+// 同步保存逐题作答进度，关闭后重开可恢复
+const st=this.data.dailyExState;
+if(st){const dArr=subj==='econ'?st.econDaily:st.ipDaily;if(dArr&&dArr[idx]){dArr[idx].answered=q.answered;dArr[idx].userAns=q.userAns;dArr[idx].correct=q.correct;sd(this.data);}}
 this.renderOneExercise();
 },
 nextOneQuestion(subj,idx){
