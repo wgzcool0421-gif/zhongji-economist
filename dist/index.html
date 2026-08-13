@@ -2328,7 +2328,8 @@ const q=qs[idx];
 const progTotal=qs.length;const progDone=qs.filter(q=>q.answered).length;
 
 const answered=q.answered;
-const labels=['A','B','C','D'];
+const labels=['A','B','C','D','E','F'];
+const isMulti=Array.isArray(q.a);
 
 container.innerHTML=`
 <div class="ex-one"><div class="ex-progress">
@@ -2338,15 +2339,22 @@ container.innerHTML=`
 <div class="ex-q-big">${q.q}</div>
 ${q.flag?`<div class="ex-flag${q.flag.indexOf('源站答案疑似错误')===0?' ex-flag-err':''}"><span class="ex-flag-badge">⚠ ${q.flag.indexOf('源站答案疑似错误')===0?'源站答案疑似错误':'答案存疑'}</span><span>${q.flag}</span></div>`:''}
 <div class="ex-opts-big">${q.o.map((opt,oi)=>{
-let cls='ex-opt-big';if(answered){
-if(oi===q.userAns&&oi===q.a)cls+=' corr';
-else if(oi===q.userAns)cls+=' wrong';
-else if(oi===q.a)cls+=' corr';
+const correctSet=isMulti?(q.a||[]):[q.a];
+const userSet=(answered&&Array.isArray(q.userAns))?q.userAns:((answered&&!isMulti&&q.userAns!=null)?[q.userAns]:[]);
+let cls='ex-opt-big';
+if(answered){
+const isCorr=correctSet.includes(oi);
+const isUser=userSet.includes(oi);
+if(isCorr)cls+=' corr';
+if(isUser&&!isCorr)cls+=' wrong';
 }
-return `<label class="${cls}"><input type="radio" name="ex-one" value="${oi}" ${(answered&&oi===q.userAns)?'checked':''} ${answered?'disabled':''}>${labels[oi]}. ${opt}</label>`;}).join('')}</div>
+const inputType=isMulti?'checkbox':'radio';
+const checked=(answered&&userSet.includes(oi))?'checked':'';
+const disabled=answered?'disabled':'';
+return `<label class="${cls}"><input type="${inputType}" name="ex-one" value="${oi}" ${checked} ${disabled}>${labels[oi]}. ${opt}</label>`;}).join('')}</div>
 ${answered?`<div class="ex-feedback show ${q.correct?'correct':'wrong'}">
 <div class="fb-title">${q.correct?'✓ 回答正确！':'✗ 回答错误'}</div>
-<div class="fb-exp">${q.correct?'':`正确答案：<strong>${labels[q.a]}</strong> · `}${q.x||''}</div></div>`:''}
+<div class="fb-exp">${q.correct?'':`正确答案：<strong>${(isMulti?(q.a||[]):[q.a]).map(i=>labels[i]).join('、')}</strong> · `}${q.x||''}</div></div>`:''}
 <div class="ex-actions">
 ${!answered?`<button class="btn btn-p" onclick="App.submitOneAnswer('${subj}',${idx})">提交答案</button>`:''}
 ${answered?`<button class="btn btn-p" onclick="App.nextOneQuestion('${subj}',${idx})">${idx+1>=progTotal?'完成':'下一题 →'}</button>`:''}
@@ -2355,16 +2363,27 @@ ${answered?`<button class="btn btn-p" onclick="App.nextOneQuestion('${subj}',${i
 },
 submitOneAnswer(subj,idx){
 const qs=this._exQuestions[subj];if(!qs||idx>=qs.length)return;
+const q=qs[idx];
+const isMulti=Array.isArray(q.a);
+let ua;
+if(isMulti){
+const checked=[...document.querySelectorAll('input[name="ex-one"]:checked')].map(el=>parseInt(el.value)).sort((a,b)=>a-b);
+if(!checked.length){this.toast('请至少选择一个答案');return;}
+ua=checked;
+}else{
 const sel=document.querySelector('input[name="ex-one"]:checked');
 if(!sel){this.toast('请先选择一个答案');return;}
-const ua=parseInt(sel.value);const q=qs[idx];
-q.userAns=ua;q.answered=true;q.correct=ua===q.a;
+ua=parseInt(sel.value);
+}
+const correctA=isMulti?(q.a||[]).slice().sort((a,b)=>a-b):[];
+const isCorrect=isMulti?JSON.stringify(ua)===JSON.stringify(correctA):ua===q.a;
+q.userAns=ua;q.answered=true;q.correct=isCorrect;
 // Save to error notebook if wrong
-if(!q.correct&&!this.isInErrors(subj,q.q)){
+if(!isCorrect&&!this.isInErrors(subj,q.q)){
 this.data.errorNotebook[subj].push({
 id:'e'+Date.now()+Math.random(),question:q.q,
 options:q.o.map((o,oi)=>String.fromCharCode(65+oi)+'. '+o),
-answer:String.fromCharCode(65+q.a),reason:'',
+answer:(Array.isArray(q.a)?q.a:[q.a]).map(i=>String.fromCharCode(65+i)).join('、'),reason:'',
 chapter:q.ch>=1?'第'+q.ch+'章':'综合练习',
 mastered:false,date:new Date().toISOString()
 });
