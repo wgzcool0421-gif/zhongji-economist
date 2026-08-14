@@ -2043,7 +2043,7 @@ pastPaperAnswers:{},
 exHistory:[],
 dailySeed:0,
 dailyExState:{date:'',econPtr:1,ipPtr:1,usedEconIdx:[],usedIPIdx:[],econDaily:[],ipDaily:[]},
-tipsState:{date:'',econShown:[],ipShown:[]}
+tipsState:{date:'',econShown:[],ipShown:[],econToday:[],ipToday:[]}
 };}
 function ld(){const r=localStorage.getItem(sk());if(r){try{return JSON.parse(r)}catch(e){}}return dd();}
 function sd(d){localStorage.setItem(sk(),JSON.stringify(d));cloudPush(d);}
@@ -2647,7 +2647,7 @@ ip:[
 return this._tipsData;
 },
 _pickTips(arr,shownArr,count){
-// 当天已展示的条目去重；展示完一轮后如果还有剩余则继续随机补充，全部用完则重置
+// 跨天累计去重轮动：已看过的条目先排除；整轮看完（shown 达到总数）才重置，避免每天重复
 const total=arr.length;
 let shown=new Set(shownArr||[]);
 if(shown.size>=total){shownArr.length=0;shown=new Set();}
@@ -2655,26 +2655,35 @@ const rest=arr.filter((t,i)=>!shown.has(i));
 // Fisher–Yates 洗牌后取前 count 条
 const pool=rest.slice();
 for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-const sel=pool.slice(0,Math.min(count,pool.length));
+let sel=pool.slice(0,Math.min(count,pool.length));
 // 若一轮不足 count，从已展示的里再补（保证凑满）
 if(sel.length<count){
 const filler=arr.filter((t,i)=>shown.has(i));
 for(let i=filler.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[filler[i],filler[j]]=[filler[j],filler[i]];}
-sel.push(...filler.slice(0,count-sel.length));
+sel=sel.concat(filler.slice(0,count-sel.length));
 }
-sel.forEach((t,i)=>{const idx=arr.indexOf(t);if(!shownArr.includes(idx))shownArr.push(idx);});
-return sel;
+const idxs=sel.map(t=>arr.indexOf(t));
+idxs.forEach(idx=>{if(!shownArr.includes(idx))shownArr.push(idx);});
+return {sel,idxs};
 },
 renderTips(){
 const today=new Date().toISOString().split('T')[0];
-let st=this.data.tipsState||{date:'',econShown:[],ipShown:[]};
+let st=this.data.tipsState||{date:'',econShown:[],ipShown:[],econToday:[],ipToday:[]};
 if(!this.data.tipsState)this.data.tipsState=st;
-if(st.date!==today){st.date=today;st.econShown=[];st.ipShown=[];sd(this.data);}
+if(!st.econToday)st.econToday=[];
+if(!st.ipToday)st.ipToday=[];
 const econ=this.tipsData().econ, ip=this.tipsData().ip;
-const selE=this._pickTips(econ,st.econShown,15);
-const selI=this._pickTips(ip,st.ipShown,15);
+// 同天且已有当日快照 → 复用同一批（重开界面不换内容）；否则重新轮动抽取并保存快照
+let idxsE, idxsI;
+if(st.date===today&&st.econToday.length){idxsE=st.econToday;}
+else{const r=this._pickTips(econ,st.econShown,15);idxsE=r.idxs;st.econToday=r.idxs.slice();}
+if(st.date===today&&st.ipToday.length){idxsI=st.ipToday;}
+else{const r=this._pickTips(ip,st.ipShown,15);idxsI=r.idxs;st.ipToday=r.idxs.slice();}
+st.date=today;sd(this.data);
+const selE=idxsE.map(i=>econ[i]).filter(Boolean);
+const selI=idxsI.map(i=>ip[i]).filter(Boolean);
 const intro=document.getElementById('tips-intro');
-if(intro)intro.textContent='以下知识点精选自官方教材高频考点，两科分开显示、每天随机推送（当天已看过的不会重复），利用排队、通勤时间反复记忆。';
+if(intro)intro.textContent='以下知识点精选自官方教材高频考点，两科分开显示、每天随机推送；已看过的会跨天轮动（看完一轮才重复），当天重开界面显示同一批，利用排队、通勤时间反复记忆。';
 const htmlE=selE.map((t,i)=>`<div class="tip-card"><div class="tip-idx">${i+1}</div><div class="tip-body"><div class="tip-text">${t.t}<span class="tip-tag">${t.tag}</span></div></div></div>`).join('');
 const htmlI=selI.map((t,i)=>`<div class="tip-card"><div class="tip-idx">${i+1}</div><div class="tip-body"><div class="tip-text">${t.t}<span class="tip-tag">${t.tag}</span></div></div></div>`).join('');
 const elE=document.getElementById('tips-econ');
@@ -2683,8 +2692,9 @@ const elI=document.getElementById('tips-ip');
 if(elI)elI.innerHTML=htmlI||'<div class="empty-state"><p>暂无速记</p></div>';
 },
 rerollTips(){
-const st=this.data.tipsState||{date:'',econShown:[],ipShown:[]};
-st.econShown=[];st.ipShown=[];sd(this.data);
+// 仅清空当日快照，强制重新轮动一批（仍尊重跨天已看轮动，不会与未看完的强重复）
+const st=this.data.tipsState||{date:'',econShown:[],ipShown:[],econToday:[],ipToday:[]};
+st.econToday=[];st.ipToday=[];sd(this.data);
 this.renderTips();
 },
 };
